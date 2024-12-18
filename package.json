@@ -1,0 +1,34 @@
+{
+  "name": "routescape",
+  "version": "0.0.1",
+  "description": "React router with componentless route matching",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npm-run-all clean compile",
+    "clean": "node -e \"require('node:fs').rmSync('dist', {force: true, recursive: true});\"",
+    "compile": "esbuild index.ts --bundle --outdir=dist --platform=neutral --external:react",
+    "prepublishOnly": "npm run build",
+    "preversion": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "react router",
+    "router",
+    "history"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/axtk/routescape.git"
+  },
+  "author": "axtk",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.2",
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
