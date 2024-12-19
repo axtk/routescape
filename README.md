@@ -10,25 +10,9 @@ React router with componentless route matching
 - Functional route matching (rather than component-based) equally handles component rendering and prop values
 - SSR-compatible
 
-## Route link component
+## Links and route matching
 
-The route link components `<A>` and `<Area>` have the same props as their HTML counterparts: `<a>` and `<area>`. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
-
-```jsx
-import {A} from 'routescape';
-
-let Nav = () => (
-    <nav>
-        <A href="/intro">Intro</A>
-    </nav>
-);
-```
-
-The uppercase `<A>` component in the example above is a route link triggering an SPA transition via the History API.
-
-## Route matching
-
-The functional route matching offers a simple and consistent way to render both components and props based on the current location.
+The route link components `<A>` and `<Area>` enabling SPA navigation have the same props as their HTML counterparts: `<a>` and `<area>`. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
 
 ```jsx
 import {A, useRoute} from 'routescape';
@@ -53,9 +37,11 @@ let App = () => {
 };
 ```
 
-Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function `withRoute()`.
+The functional route matching by means of `withRoute()` offers a simple and consistent way to render both components and props based on the current location.
 
-(With the component-based route matching adopted by some routers, to conditionally render a component and to mark a link as active via its props have to be handled differently.)
+Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function.
+
+(With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
 
 ## Route parameters
 
