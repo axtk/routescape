@@ -100,7 +100,7 @@ let Nav = () => {
 
 In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
 
-(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`).
+(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`.)
 
 ## Unknown routes
 
@@ -163,16 +163,12 @@ This particular example is somewhat contrived since it could have been composed 
 
 The interface of the `route` object consists of the following parts:
 
-- responsible for SPA navigation via the History API
+- SPA navigation via the History API:
     - `.assign()`, `.replace()`, `.reload()`, and readonly properties: `.href`, `.pathname`, `.search`, `.hash`, semantically similar to `window.location`;
     - `.back()`, `.forward()`, `.go(delta)`, corresponding to the [`history` methods](https://developer.mozilla.org/en-US/docs/Web/API/History#instance_methods);
-- responsible for route matching:
+- route matching:
     - `.matches(value)`, checking whether the current location matches the given `value`;
     - `.match(value)`, returning matched parameters if the given `value` is a regular expression and `null` if the current location doesn't match the `value`.
-
-The `route` object has a number of route navigation methods: `assign()`,
-
-Previous examples are focused on the declarative route navigation via route link component `<A>` and route matching via `withRoute()`, the second part of the value returned from the `useRoute()` hook. The first part allows for the imperative route navigation.
 
 ## Location provider
 
@@ -252,3 +248,5 @@ let Content = ({value}) => {
     );
 };
 ```
+
+In this example, the `useRouteLinks()` hook converts all links matching the selector `'a'` inside the container referenced by `containerRef` to SPA route links.
