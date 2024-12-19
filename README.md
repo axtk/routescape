@@ -2,12 +2,14 @@
 
 # routescape
 
-React router with componentless route matching
+Streamlined router for React apps
 
 - Concise API
-- Routes are not necessarily hierarchical or otherwise tightly coupled
-- Route link components don't introduce new APIs and are similar to HTML links
-- Functional route matching (rather than component-based) equally handles component rendering and prop values
+- Unopinionated route structure: routes are not necessarily hierarchical or otherwise tightly coupled
+- Consistent with native APIs:
+    - route links are similar to HTML links
+    - route navigation interface is similar to `window.location`
+- Same route matching for components and prop values
 - SSR-compatible
 
 ## Links and route matching
@@ -42,6 +44,8 @@ The functional route matching by means of `withRoute()` offers a simple and cons
 Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function.
 
 (With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
+
+### Navigation mode
 
 By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"` a link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
 
