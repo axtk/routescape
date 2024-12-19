@@ -6,10 +6,10 @@ Streamlined router for React apps
 
 - Concise API
 - Unopinionated route structure: routes are not necessarily hierarchical or otherwise tightly coupled
+- Same route matching for components and prop values
 - Consistent with native APIs:
     - route links are similar to HTML links
     - route navigation interface is similar to `window.location`
-- Same route matching for components and prop values
 - SSR-compatible
 
 ## Links and route matching
