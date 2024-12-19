@@ -15,6 +15,7 @@
     "react",
     "react router",
     "router",
+    "spa",
     "history"
   ],
   "repository": {
