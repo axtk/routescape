@@ -95,7 +95,7 @@ let Nav = () => {
 
 In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
 
-(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`.)
+(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`, which is perfectly fine as well.)
 
 ## Unknown routes
 
