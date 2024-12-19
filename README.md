@@ -59,6 +59,9 @@ let App = () => {
 
     return (
         <>
+            <nav>
+                <A href="/intro">Intro</A>
+            </nav>
             {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({params}) => (
                 <main>
                     <h1>Section #{params.id}</h1>
@@ -111,6 +114,9 @@ let App = () => {
 
     return (
         <>
+            <nav>
+                <A href="/intro">Intro</A>
+            </nav>
             {withRoute(routeMap.intro, (
                 <main>
                     <h1>Intro</h1>
