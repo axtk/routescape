@@ -3,19 +3,19 @@ import {NavigationLocation} from '../lib/url/NavigationLocation';
 import {RouteContext} from './RouteContext';
 
 export type RouterProps = {
-    route?: string | null | undefined | NavigationLocation;
+    location?: string | null | undefined | NavigationLocation;
     children?: ReactNode;
 };
 
-export const Router = ({route, children}: RouterProps) => {
+export const Router = ({location, children}: RouterProps) => {
     let value;
 
-    if (route instanceof NavigationLocation)
-        value = route;
-    else if (route === undefined || route === null || typeof route === 'string')
-        value = new NavigationLocation(route);
+    if (location instanceof NavigationLocation)
+        value = location;
+    else if (location === undefined || location === null || typeof location === 'string')
+        value = new NavigationLocation(location);
     else
-        throw new Error('Router route of unknown type');
+        throw new Error('Router location of unknown type');
 
     return createElement(RouteContext.Provider, {value}, children);
 };
