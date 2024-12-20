@@ -45,7 +45,7 @@ Note that both the intro link's `className` and `<main>` are rendered in a simil
 
 (With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
 
-### Conditional rendering fallback
+### Route matching fallback
 
 Similarly to the ternary operator `condition ? x : y` (often seen with the general [conditional rendering](https://react.dev/learn/conditional-rendering) pattern), `withRoute()` accepts a fallback value as the optional third parameter: `withRoute(routePattern, x, y)`.
 
