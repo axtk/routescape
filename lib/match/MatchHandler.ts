@@ -1,3 +1,3 @@
-import type {MatchPayload} from './MatchPayload';
+import type {MatchParams} from './MatchParams';
 
-export type MatchHandler<T> = (payload: MatchPayload) => T;
+export type MatchHandler<T> = (payload: MatchParams) => T;

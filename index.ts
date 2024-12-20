@@ -1,7 +1,6 @@
 export * from './lib/match/MatchHandler';
 export * from './lib/match/MatchParams';
 export * from './lib/match/matchPattern';
-export * from './lib/match/MatchPayload';
 export * from './lib/url/getPath';
 export * from './lib/url/isSameOrigin';
 export * from './lib/url/LocationHandler';

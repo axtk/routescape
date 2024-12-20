@@ -130,15 +130,14 @@ export class NavigationLocation {
         mismatchOutput?: Y | MatchHandler<Y>,
     ): X | Y | undefined {
         let matches = matchPattern(locationPattern, this.href);
-        let payload = {href: this.href, params: matches || {}};
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<Y>)(payload)
+                ? (mismatchOutput as MatchHandler<Y>)(matches ?? {})
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'
-            ? (matchOutput as MatchHandler<X>)(payload)
+            ? (matchOutput as MatchHandler<X>)(matches ?? {})
             : matchOutput;
     }
 
