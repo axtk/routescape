@@ -10,6 +10,8 @@ Streamlined router for React apps
     - route navigation interface is similar to `window.location`
 - SSR-compatible
 
+Installation: `npm i routescape`
+
 ## Links and route matching
 
 The route link components `<A>` and `<Area>` enabling SPA navigation have the same props as their HTML counterparts: `<a>` and `<area>`. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
