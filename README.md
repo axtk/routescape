@@ -41,7 +41,7 @@ let App = () => {
 
 The functional route matching by means of `withRoute()` offers a simple and consistent way to render both components and props based on the current location.
 
-Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function.
+Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function. `withRoute('/intro', x)` returns `x` only if the current location is `/intro`.
 
 (With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
 
@@ -66,7 +66,7 @@ let Nav = () => {
 };
 ```
 
-In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
+In the example above, the link is marked as `active` if the current location is `/intro`, and `inactive` otherwise.
 
 With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro` (since the missing fallback parameter is effectively `undefined`), which is perfectly fine as well.
 
@@ -76,7 +76,7 @@ By default, after the link navigation occurs, the user can navigate back by pres
 
 ## Route parameters
 
-`withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second parameter of `withRoute()` if it happens to be a function.
+`withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions.
 
 ```jsx
 let App = () => {
