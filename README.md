@@ -68,7 +68,7 @@ let Nav = () => {
 
 In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
 
-(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`, which is perfectly fine as well.)
+With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro` (since the missing fallback parameter is effectively `undefined`), which is perfectly fine as well.
 
 ### Navigation mode
 
