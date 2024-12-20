@@ -1,5 +1,3 @@
-[![npm](https://img.shields.io/npm/v/routescape?labelColor=royalblue&color=royalblue&style=flat-square)](https://www.npmjs.com/package/routescape) [![GitHub](https://img.shields.io/badge/-GitHub-royalblue?labelColor=royalblue&color=royalblue&style=flat-square&logo=github)](https://github.com/axtk/routescape) ![React](https://img.shields.io/badge/%23-React-345?labelColor=345&color=345&style=flat-square) [![SSR](https://img.shields.io/badge/%23-SSR-345?labelColor=345&color=345&style=flat-square)](#server-side-rendering-ssr) ![TypeScript](https://img.shields.io/badge/%23-TypeScript-345?labelColor=345&color=345&style=flat-square)
-
 # routescape
 
 Streamlined router for React apps
