@@ -45,6 +45,31 @@ Note that both the intro link's `className` and `<main>` are rendered in a simil
 
 (With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
 
+### Conditional rendering fallback
+
+Similarly to the ternary operator `condition ? x : y` (often seen with the general [conditional rendering](https://react.dev/learn/conditional-rendering) pattern), `withRoute()` accepts a fallback value as the optional third parameter: `withRoute(routePattern, x, y)`.
+
+```jsx
+let Nav = () => {
+    let [route, withRoute] = useRoute();
+
+    return (
+        <nav>
+            <A
+                href="/intro"
+                className={withRoute('/intro', 'active', 'inactive')}
+            >
+                Intro
+            </A>
+        </nav>
+    );
+};
+```
+
+In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
+
+(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`, which is perfectly fine as well.)
+
 ### Navigation mode
 
 By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"` a link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
@@ -71,31 +96,6 @@ let App = () => {
     );
 };
 ```
-
-## Conditional rendering fallback
-
-Similarly to the ternary operator `condition ? x : y` (often seen with the general [conditional rendering](https://react.dev/learn/conditional-rendering) pattern), `withRoute()` accepts a fallback value as the optional third parameter: `withRoute(routePattern, x, y)`.
-
-```jsx
-let Nav = () => {
-    let [route, withRoute] = useRoute();
-
-    return (
-        <nav>
-            <A
-                href="/intro"
-                className={withRoute('/intro', 'active', 'inactive')}
-            >
-                Intro
-            </A>
-        </nav>
-    );
-};
-```
-
-In the example above, the link is marked as `'inactive'` if the current location isn't `/intro`.
-
-(With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro`, which is perfectly fine as well.)
 
 ## Unknown routes
 
