@@ -115,7 +115,7 @@ let App = () => {
     return (
         <>
             <nav>
-                <A href="/intro">Intro</A>
+                <A href={routeMap.intro}>Intro</A>
             </nav>
             {withRoute(routeMap.intro, (
                 <main>
