@@ -207,9 +207,9 @@ Both `route` and `withRoute()` returned from `useRoute()` operate based on the r
 The location provider component `<Router>` can be used to redefine the route matching behavior.
 
 ```jsx
-import {NavigationLocation, getPath, Router} from 'routescape';
+import {Route, getPath, Router} from 'routescape';
 
-export class PathLocation extends NavigationLocation {
+export class PathRoute extends Route {
     getHref(location) {
         // disregard `search` and `hash`
         return getPath(location, {search: false, hash: false});
@@ -217,7 +217,7 @@ export class PathLocation extends NavigationLocation {
 }
 
 let App = () => (
-    <Router location={new PathLocation(url)}>
+    <Router location={new PathRoute(url)}>
         <AppContent/>
     </Router>
 );
@@ -225,7 +225,7 @@ let App = () => (
 
 By default, routing relies on the entire URL. In this example, we've redefined this behavior to disregard the `search` and `hash` portions of the URL.
 
-Extending the `NavigationLocation` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
+Extending the `Route` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
 
 ## Converting plain links to route links
 

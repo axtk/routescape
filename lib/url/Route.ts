@@ -9,7 +9,7 @@ import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
 import type {TransitionType} from './TransitionType';
 
-export class NavigationLocation {
+export class Route {
     href = '';
     initialized = false;
 

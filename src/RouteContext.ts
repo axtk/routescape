@@ -1,4 +1,4 @@
 import {createContext} from 'react';
-import {NavigationLocation} from '../lib/url/NavigationLocation';
+import {Route} from '../lib/url/Route';
 
-export const RouteContext = createContext(new NavigationLocation());
+export const RouteContext = createContext(new Route());

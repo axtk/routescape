@@ -1,10 +1,10 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {NavigationLocation} from '../lib/url/NavigationLocation';
+import {Route} from '../lib/url/Route';
 import {RouteContext} from './RouteContext';
 
-export type WithRoute = NavigationLocation['evaluate'];
+export type WithRoute = Route['evaluate'];
 
-export function useRoute(): [NavigationLocation, WithRoute] {
+export function useRoute(): [Route, WithRoute] {
     let route = useContext(RouteContext);
     let [, setHref] = useState(route.href);
 
