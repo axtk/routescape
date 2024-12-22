@@ -1,1 +1,7 @@
-export type LocationHandler = (next: string, prev: string) => boolean | void | undefined;
+import {TransitionType} from './TransitionType';
+
+export type LocationHandler = (
+    nextHref: string,
+    prevHref: string | null,
+    transitionType?: TransitionType,
+) => boolean | void | undefined | Promise<boolean | void | undefined>;

@@ -1,82 +1,85 @@
 import type {MatchHandler} from '../match/MatchHandler';
 import type {MatchParams} from '../match/MatchParams';
 import {matchPattern} from '../match/matchPattern';
-import {syntheticOrigin} from './syntheticOrigin';
+import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
-import {IsomorphicURL} from './IsomorphicURL';
 import type {LocationHandler} from './LocationHandler';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
 import type {TransitionType} from './TransitionType';
 
 export class NavigationLocation {
-    href: string;
+    href = '';
+    initialized = false;
 
-    _listeners: LocationHandler[];
-    _middleware: LocationHandler[];
+    _listeners: LocationHandler[] = [];
+    _middleware: LocationHandler[] = [];
 
     constructor(location?: LocationValue) {
-        this._listeners = [];
-        this._middleware = [];
-
-        this.href = this.getHref(location);
-    }
-
-    init(): void {
         if (typeof window !== 'undefined')
             window.addEventListener('popstate', () => this.dispatch());
+
+        Promise.resolve(this.dispatch(location)).then(() => {
+            this.initialized = true;
+        });
     }
 
     getHref(location?: LocationValue): string {
         return getPath(location);
     }
 
-    subscribe(listener: LocationHandler): () => void {
-        this._listeners.push(listener);
+    subscribe(listener: LocationHandler, beforeTransition = false) {
+        let listeners = beforeTransition ? this._middleware : this._listeners;
+
+        listeners.push(listener);
 
         return () => {
-            for (let i = this._listeners.length - 1; i >= 0; i--) {
-                if (this._listeners[i] === listener)
-                    this._listeners.splice(i, 1);
+            for (let i = listeners.length - 1; i >= 0; i--) {
+                if (listeners[i] === listener)
+                    listeners.splice(i, 1);
             }
         };
     }
 
-    use(middleware: LocationHandler): void {
-        this._middleware.push(middleware);
+    use(middleware: LocationHandler) {
+        return this.subscribe(middleware, true);
     }
 
-    dispatch(location?: LocationValue, transitionType?: TransitionType): void {
-        if (this.transition(location, transitionType) === false)
-            return;
+    async dispatch(location?: LocationValue, transitionType?: TransitionType): Promise<void> {
+        let prevHref = this.href;
+        let nextHref = this.getHref(location);
 
-        let prev = this.href;
-        let next = this.getHref(location);
+        for (let middleware of [...this._middleware, this.transition]) {
+            let result = middleware(nextHref, prevHref, transitionType);
 
-        this.href = next;
+            if ((result instanceof Promise ? await result : result) === false)
+                return;
+        }
 
-        for (let listener of this._listeners)
-            listener(next, prev);
+        this.href = nextHref;
+
+        if (this.initialized) {
+            for (let listener of this._listeners) {
+                let result = listener(nextHref, prevHref, transitionType);
+
+                if (result instanceof Promise)
+                    await result;
+            }
+        }
     }
 
-    transition(location: LocationValue, type?: TransitionType): boolean | void | undefined {
-        if (typeof window === 'undefined')
+    transition: LocationHandler = (nextHref, _prevHref, type) => {
+        if (typeof window === 'undefined' || !this.initialized)
             return;
 
-        let prev = this.href;
-        let next = this.getHref(location);
-
-        if (this._middleware.some(middleware => middleware(next, prev) === false))
-            return false;
-
-        if (!window.history || !isSameOrigin(next)) {
+        if (!window.history || !isSameOrigin(nextHref)) {
             switch (type) {
                 case 'assign':
-                    window.location.assign(next);
+                    window.location.assign(nextHref);
                     break;
                 case 'replace':
-                    window.location.replace(next);
+                    window.location.replace(nextHref);
                     break;
             }
 
@@ -85,21 +88,12 @@ export class NavigationLocation {
 
         switch (type) {
             case 'assign':
-                window.history.pushState({}, '', next);
+                window.history.pushState({}, '', nextHref);
                 break;
             case 'replace':
-                window.history.replaceState({}, '', next);
+                window.history.replaceState({}, '', nextHref);
                 break;
         }
-    }
-
-    /*
-     * Jumps the specified number of the browser history entries away
-     * from the current entry.
-     */
-    go(delta: number): void {
-        if (typeof window !== 'undefined' && window.history)
-            window.history.go(delta);
     }
 
     /**
@@ -145,40 +139,49 @@ export class NavigationLocation {
      * Adds an entry to the browser's session history
      * (similarly to [`history.pushState()`](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState).
      */
-    assign(location: LocationValue): void {
-        this.dispatch(location, 'assign');
+    async assign(location: LocationValue) {
+        return this.dispatch(location, 'assign');
     }
 
     /**
      * Replaces the current history entry
      * (similarly to [`history.replaceState()`](https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState).
      */
-    replace(location: LocationValue): void {
-        this.dispatch(location, 'replace');
+    async replace(location: LocationValue) {
+        return this.dispatch(location, 'replace');
     }
 
-    reload(): void {
-        this.dispatch();
+    async reload() {
+        return this.dispatch();
     }
 
-    back(): void {
+    /*
+     * Jumps the specified number of the browser history entries away
+     * from the current entry.
+     */
+    go(delta: number): void {
+        if (typeof window !== 'undefined' && window.history)
+            window.history.go(delta);
+    }
+
+    back() {
         this.go(-1);
     }
 
-    forward(): void {
+    forward() {
         this.go(1);
     }
 
     get pathname() {
-        return new IsomorphicURL(this.href, syntheticOrigin).pathname;
+        return getHrefSegment(this.href, 'pathname');
     }
 
     get search() {
-        return new IsomorphicURL(this.href, syntheticOrigin).search;
+        return getHrefSegment(this.href, 'search');
     }
 
     get hash() {
-        return new IsomorphicURL(this.href, syntheticOrigin).hash;
+        return getHrefSegment(this.href, 'hash');
     }
 
     /**
