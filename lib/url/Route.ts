@@ -76,7 +76,10 @@ export class Route {
     }
 
     transition: Middleware = (_route, nextHref, transitionType) => {
-        if (typeof window === 'undefined' || !this.initialized)
+        if (typeof window === 'undefined')
+            return;
+
+        if (!this.initialized && this.getHref(window.location.href) === nextHref)
             return;
 
         if (!window.history || !isSameOrigin(nextHref)) {
