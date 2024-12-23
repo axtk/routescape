@@ -202,6 +202,65 @@ Both `route` and `withRoute()` returned from `useRoute()` operate based on the r
 
 `<Router>` can be used with client-side rendering as well. In most cases, it is unnecessary since by default the route context takes the global location from `window.location` if it's available.
 
+## Actions before route transition (middleware)
+
+The `route.use()` method allows to define routing *middleware*, that is intermediate actions to be done before the route transition occurs.
+
+`route.use()` returns an unsubscription function which is handy to pass as a returned value of a React Effect callback.
+
+### Preventing navigation
+
+Common use cases for preventing navigation are: warning about unsaved data or opening a preview widget for certain links.
+
+Navigation to another route can be prevented by returning `false` under certain conditions within a middleware:
+
+```jsx
+let App = () => {
+    let [route, withRoute] = useRoute();
+    let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
+
+    useEffect(() => {
+        return route.use(() => {
+            if (hasUnsavedChanges)
+                return false;
+        });
+    }, [route, hasUnsavedChanges]);
+
+    return (
+        // app content
+    );
+};
+```
+
+In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
+
+### Redirection
+
+Redirection to another route can be done by calling `route.assign()` within a middleware:
+
+```jsx
+let App = () => {
+    let [route, withRoute] = useRoute();
+
+    useEffect(() => {
+        return route.use(nextHref => {
+            if (nextHref === '/intro') {
+                route.assign('/');
+                return false;
+            }
+        });
+    }, [route]);
+
+    return (
+        // app content
+    );
+};
+```
+
+Note that the middleware callback returns `false` when `nextHref` is `'/intro'`. This prevents the transition to `/intro`.
+
+The middleware might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
+
 ## Custom routing
 
 The location provider component `<Router>` can be used to redefine the route matching behavior.
