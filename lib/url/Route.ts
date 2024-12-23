@@ -1,24 +1,39 @@
 import type {MatchHandler} from '../match/MatchHandler';
 import type {MatchParams} from '../match/MatchParams';
 import {matchPattern} from '../match/matchPattern';
+import {push} from '../push';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
-import type {LocationHandler} from './LocationHandler';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
 import type {TransitionType} from './TransitionType';
+
+export type Middleware = (
+    route: Route,
+    nextHref: string,
+    transitionType?: TransitionType,
+) => boolean | void | undefined | Promise<boolean | void | undefined>;
+
+export type Listener = (
+    route: Route,
+    prevHref: string,
+    transitionType?: TransitionType,
+) => boolean | void | undefined | Promise<boolean | void | undefined>;
 
 export class Route {
     href = '';
     initialized = false;
 
-    _listeners: LocationHandler[] = [];
-    _middleware: LocationHandler[] = [];
+    _listeners: Listener[] = [];
+    _middleware: Middleware[] = [];
 
-    constructor(location?: LocationValue) {
+    constructor(location?: LocationValue, onBeforeTransition?: Middleware) {
         if (typeof window !== 'undefined')
             window.addEventListener('popstate', () => this.dispatch());
+
+        if (onBeforeTransition)
+            this.use(onBeforeTransition);
 
         Promise.resolve(this.dispatch(location)).then(() => {
             this.initialized = true;
@@ -29,21 +44,12 @@ export class Route {
         return getPath(location);
     }
 
-    subscribe(listener: LocationHandler, beforeTransition = false) {
-        let listeners = beforeTransition ? this._middleware : this._listeners;
-
-        listeners.push(listener);
-
-        return () => {
-            for (let i = listeners.length - 1; i >= 0; i--) {
-                if (listeners[i] === listener)
-                    listeners.splice(i, 1);
-            }
-        };
+    subscribe(listener: Listener) {
+        return push(this._listeners, listener);
     }
 
-    use(middleware: LocationHandler) {
-        return this.subscribe(middleware, true);
+    use(middleware: Middleware) {
+        return push(this._middleware, middleware);
     }
 
     async dispatch(location?: LocationValue, transitionType?: TransitionType): Promise<void> {
@@ -51,7 +57,7 @@ export class Route {
         let nextHref = this.getHref(location);
 
         for (let middleware of [...this._middleware, this.transition]) {
-            let result = middleware(nextHref, prevHref, transitionType);
+            let result = middleware(this, nextHref, transitionType);
 
             if ((result instanceof Promise ? await result : result) === false)
                 return;
@@ -61,7 +67,7 @@ export class Route {
 
         if (this.initialized) {
             for (let listener of this._listeners) {
-                let result = listener(nextHref, prevHref, transitionType);
+                let result = listener(this, prevHref, transitionType);
 
                 if (result instanceof Promise)
                     await result;
@@ -69,12 +75,12 @@ export class Route {
         }
     }
 
-    transition: LocationHandler = (nextHref, _prevHref, type) => {
+    transition: Middleware = (_route, nextHref, transitionType) => {
         if (typeof window === 'undefined' || !this.initialized)
             return;
 
         if (!window.history || !isSameOrigin(nextHref)) {
-            switch (type) {
+            switch (transitionType) {
                 case 'assign':
                     window.location.assign(nextHref);
                     break;
@@ -86,7 +92,7 @@ export class Route {
             return;
         }
 
-        switch (type) {
+        switch (transitionType) {
             case 'assign':
                 window.history.pushState({}, '', nextHref);
                 break;
