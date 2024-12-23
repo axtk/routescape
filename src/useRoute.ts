@@ -9,7 +9,7 @@ export function useRoute(): [Route, WithRoute] {
     let [, setHref] = useState(route.href);
 
     useEffect(
-        () => route.subscribe(href => setHref(href)),
+        () => route.subscribe(({href}) => setHref(href)),
         [route],
     );
 
