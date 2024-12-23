@@ -5,7 +5,7 @@ Minimalist router for React apps
 - Concise API
 - Unopinionated route structure: routes are not necessarily hierarchical or otherwise tightly coupled
 - Same route matching for components and prop values
-- Decoupled from data loading: the router only manages routing
+- Middleware for actions ahead of route transition
 - Consistent with native APIs:
     - route links are similar to HTML links
     - route navigation interface is similar to `window.location`
