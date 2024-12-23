@@ -10,16 +10,12 @@ import type {LocationValue} from './LocationValue';
 import type {TransitionType} from './TransitionType';
 
 export type Middleware = (
-    route: Route,
     nextHref: string,
-    transitionType?: TransitionType,
-) => boolean | void | undefined | Promise<boolean | void | undefined>;
-
-export type Listener = (
-    route: Route,
     prevHref: string,
     transitionType?: TransitionType,
 ) => boolean | void | undefined | Promise<boolean | void | undefined>;
+
+export type Listener = Middleware;
 
 export class Route {
     href = '';
@@ -54,7 +50,7 @@ export class Route {
         let nextHref = this.getHref(location);
 
         for (let middleware of [...this._middleware, this.transition]) {
-            let result = middleware(this, nextHref, transitionType);
+            let result = middleware(nextHref, prevHref, transitionType);
 
             if ((result instanceof Promise ? await result : result) === false)
                 return;
@@ -63,14 +59,14 @@ export class Route {
         this.href = nextHref;
 
         for (let listener of this._listeners) {
-            let result = listener(this, prevHref, transitionType);
+            let result = listener(nextHref, prevHref, transitionType);
 
             if (result instanceof Promise)
                 await result;
         }
     }
 
-    transition: Middleware = (_route, nextHref, transitionType) => {
+    transition: Middleware = (nextHref, _prevHref, transitionType) => {
         if (typeof window === 'undefined')
             return;
 
