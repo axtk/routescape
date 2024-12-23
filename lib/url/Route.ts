@@ -28,12 +28,9 @@ export class Route {
     _listeners: Listener[] = [];
     _middleware: Middleware[] = [];
 
-    constructor(location?: LocationValue, onBeforeTransition?: Middleware) {
+    constructor(location?: LocationValue) {
         if (typeof window !== 'undefined')
             window.addEventListener('popstate', () => this.dispatch());
-
-        if (onBeforeTransition)
-            this.use(onBeforeTransition);
 
         Promise.resolve(this.dispatch(location)).then(() => {
             this.initialized = true;
