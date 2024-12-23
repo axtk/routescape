@@ -65,13 +65,11 @@ export class Route {
 
         this.href = nextHref;
 
-        if (this.initialized) {
-            for (let listener of this._listeners) {
-                let result = listener(this, prevHref, transitionType);
+        for (let listener of this._listeners) {
+            let result = listener(this, prevHref, transitionType);
 
-                if (result instanceof Promise)
-                    await result;
-            }
+            if (result instanceof Promise)
+                await result;
         }
     }
 
