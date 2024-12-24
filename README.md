@@ -51,8 +51,10 @@ Note that both the intro link's `className` and `<main>` are rendered in a simil
 Similarly to the ternary operator `condition ? x : y` (often seen with the general [conditional rendering](https://react.dev/learn/conditional-rendering) pattern), `withRoute()` accepts a fallback value as the optional third parameter: `withRoute(routePattern, x, y)`.
 
 ```jsx
+import {A, useRoute} from 'routescape';
+
 let Nav = () => {
-    let [route, withRoute] = useRoute();
+    let [, withRoute] = useRoute();
 
     return (
         <nav>
@@ -70,6 +72,26 @@ let Nav = () => {
 In the example above, the link is marked as `active` if the current location is `/intro`, and `inactive` otherwise.
 
 With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro` (since the missing fallback parameter is effectively `undefined`), which is perfectly fine as well.
+
+Another option would be to render a non-interactive `<span>` for the active route, and a route link pointing to that route otherwise:
+
+```jsx
+import {A, useRoute} from 'routescape';
+
+let Nav = () => {
+    let [, withRoute] = useRoute();
+
+    return (
+        <nav>
+            {withRoute(
+                '/intro',
+                <span>Intro</span>,
+                <A href="/intro">Intro<A>,
+            )}
+        </nav>
+    );
+};
+```
 
 ### Navigation mode
 
