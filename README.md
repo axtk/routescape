@@ -2,14 +2,14 @@
 
 Minimalist router for React apps
 
-- Concise API
-- Unopinionated route structure: routes are not necessarily hierarchical or otherwise tightly coupled
-- Same route matching for components and prop values
-- Middleware for actions ahead of route transition
-- Consistent with native APIs:
+- Single way to match routes for components and prop values
+- Consistency with native APIs:
     - route links are similar to HTML links
     - route navigation interface is similar to `window.location`
-- SSR-compatible
+- Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled
+- Middleware for actions ahead of route transition
+- Utility hook to make link tags in static HTML content work like SPA route links
+- Compatibility with SSR
 
 Installation: `npm i routescape`
 
