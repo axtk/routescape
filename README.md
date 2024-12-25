@@ -310,7 +310,7 @@ Extending the `Route` class gives plenty of room for customization. This approac
 
 ## Converting plain links to route links
 
-A static chunk of HTML content is an example where the route link component `<A>` can't be directly used but it still might be desirable to convert plain HTML links to SPA route links. The `useRouteLinks()` hook can be helpful here:
+A chunk of static HTML content is an example where the route link component `<A>` can't be directly used but it still might be desirable to make plain HTML links in that content behave as SPA route links. The `useRouteLinks()` hook can be helpful here:
 
 ```jsx
 import {useRef} from 'react';
@@ -329,4 +329,4 @@ let Content = ({value}) => {
 };
 ```
 
-In this example, the `useRouteLinks()` hook converts all links matching the selector `'a'` inside the container referenced by `containerRef` to SPA route links.
+In this example, the `useRouteLinks()` hook makes all links matching the selector `'a'` inside the container referenced by `containerRef` act as SPA route links.
