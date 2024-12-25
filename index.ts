@@ -20,6 +20,6 @@ export * from './src/RouteContext';
 export * from './src/Router';
 export * from './src/useLinkClick';
 export * from './src/useNavigationComplete';
+export * from './src/useNavigationStart';
 export * from './src/useRoute';
 export * from './src/useRouteLinks';
-export * from './src/useRouteMiddleware';
