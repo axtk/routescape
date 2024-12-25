@@ -5,17 +5,11 @@ import {push} from '../push';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
+import type {Listener} from './Listener';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
+import type {Middleware} from './Middleware';
 import type {TransitionType} from './TransitionType';
-
-export type Middleware = (
-    nextHref: string,
-    prevHref: string,
-    transitionType?: TransitionType,
-) => boolean | void | undefined | Promise<boolean | void | undefined>;
-
-export type Listener = Middleware;
 
 export class Route {
     href = '';
