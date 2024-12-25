@@ -10,6 +10,7 @@ export type UseLinkClickParams = AProps | AreaProps;
 export function useLinkClick(props: UseLinkClickParams) {
     let {href, target, onClick} = props;
     let route = useContext(RouteContext);
+    let navigationMode = getNavigationMode(props);
 
     return useCallback((event: MouseEvent<HTMLAnchorElement & HTMLAreaElement>) => {
         onClick?.(event);
@@ -17,9 +18,9 @@ export function useLinkClick(props: UseLinkClickParams) {
         if (!event.defaultPrevented && isRouteEvent(event, {href, target})) {
             event.preventDefault();
 
-            if (getNavigationMode(props) === 'replace')
+            if (navigationMode === 'replace')
                 route.replace(href);
             else route.assign(href);
         }
-    }, [route, href, target, onClick]);
+    }, [route, href, target, onClick, navigationMode]);
 }
