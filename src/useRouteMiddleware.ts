@@ -1,10 +1,10 @@
 import {DependencyList, useContext, useMemo, useEffect} from 'react';
-import type {Middleware} from '../lib/url/Middleware';
+import type {NavigationHandler} from '../lib/url/NavigationHandler';
 import {RouteContext} from './RouteContext';
 
-export function useRouteMiddleware(middleware: Middleware, deps: DependencyList) {
+export function useRouteMiddleware(handler: NavigationHandler, deps: DependencyList) {
     let route = useContext(RouteContext);
-    let callback = useMemo(() => middleware, deps);
+    let callback = useMemo(() => handler, deps);
 
     useEffect(() => route.use(callback), [route, callback]);
 }

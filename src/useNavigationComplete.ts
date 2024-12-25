@@ -1,10 +1,10 @@
 import {DependencyList, useContext, useMemo, useEffect} from 'react';
-import type {Listener} from '../lib/url/Listener';
+import type {NavigationHandler} from '../lib/url/NavigationHandler';
 import {RouteContext} from './RouteContext';
 
-export function useNavigationComplete(listener: Listener, deps: DependencyList) {
+export function useNavigationComplete(handler: NavigationHandler, deps: DependencyList) {
     let route = useContext(RouteContext);
-    let callback = useMemo(() => listener, deps);
+    let callback = useMemo(() => handler, deps);
 
     useEffect(() => route.subscribe(callback), [route, callback]);
 }

@@ -1,6 +1,6 @@
 import type {TransitionType} from './TransitionType';
 
-export type Middleware = (
+export type NavigationHandler = (
     nextHref: string,
     prevHref: string,
     transitionType?: TransitionType,

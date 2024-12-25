@@ -5,18 +5,17 @@ import {push} from '../push';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
-import type {Listener} from './Listener';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
-import type {Middleware} from './Middleware';
+import type {NavigationHandler} from './NavigationHandler';
 import type {TransitionType} from './TransitionType';
 
 export class Route {
     href = '';
     initialized = false;
 
-    _listeners: Listener[] = [];
-    _middleware: Middleware[] = [];
+    _listeners: NavigationHandler[] = [];
+    _middleware: NavigationHandler[] = [];
 
     constructor(location?: LocationValue) {
         if (typeof window !== 'undefined')
@@ -31,11 +30,11 @@ export class Route {
         return getPath(location);
     }
 
-    subscribe(listener: Listener) {
+    subscribe(listener: NavigationHandler) {
         return push(this._listeners, listener);
     }
 
-    use(middleware: Middleware) {
+    use(middleware: NavigationHandler) {
         return push(this._middleware, middleware);
     }
 
@@ -60,7 +59,7 @@ export class Route {
         }
     }
 
-    transition: Middleware = (nextHref, _prevHref, transitionType) => {
+    transition: NavigationHandler = (nextHref, _prevHref, transitionType) => {
         if (typeof window === 'undefined')
             return;
 
