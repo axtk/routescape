@@ -267,7 +267,7 @@ The callback might as well contain additional checks before allowing the redirec
 
 The callback of the `useNavigationComplete()` hook is called after going through all routing middleware registered with the `useNavigationStart()` hook and after assigning the next route.
 
-The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state (which is normally the case).
+The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state.
 
 ```jsx
 import {useNavigationComplete} from 'routescape';
