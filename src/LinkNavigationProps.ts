@@ -1,5 +1,5 @@
-import type {NavigationMode} from './NavigationMode';
+import type {NavigationMode} from '../lib/url/NavigationMode';
 
 export type LinkNavigationProps = {
-    'data-navigation-mode'?: NavigationMode;
+    'data-navigation-mode'?: NavigationMode | undefined;
 };

@@ -8,7 +8,7 @@ import {isSameOrigin} from './isSameOrigin';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
 import type {NavigationHandler} from './NavigationHandler';
-import type {TransitionType} from './TransitionType';
+import type {NavigationMode} from './NavigationMode';
 
 export class Route {
     href = '';
@@ -38,12 +38,12 @@ export class Route {
         return push(this._middleware, middleware);
     }
 
-    async dispatch(location?: LocationValue, transitionType?: TransitionType): Promise<void> {
+    async dispatch(location?: LocationValue, navigationMode?: NavigationMode): Promise<void> {
         let prevHref = this.href;
         let nextHref = this.getHref(location);
 
         for (let middleware of [...this._middleware, this.transition]) {
-            let result = middleware(nextHref, prevHref, transitionType);
+            let result = middleware(nextHref, prevHref, navigationMode);
 
             if ((result instanceof Promise ? await result : result) === false)
                 return;
@@ -52,14 +52,14 @@ export class Route {
         this.href = nextHref;
 
         for (let listener of this._listeners) {
-            let result = listener(nextHref, prevHref, transitionType);
+            let result = listener(nextHref, prevHref, navigationMode);
 
             if (result instanceof Promise)
                 await result;
         }
     }
 
-    transition: NavigationHandler = (nextHref, _prevHref, transitionType) => {
+    transition: NavigationHandler = (nextHref, _prevHref, navigationMode) => {
         if (typeof window === 'undefined')
             return;
 
@@ -67,7 +67,7 @@ export class Route {
             return;
 
         if (!window.history || !isSameOrigin(nextHref)) {
-            switch (transitionType) {
+            switch (navigationMode) {
                 case 'assign':
                     window.location.assign(nextHref);
                     break;
@@ -79,7 +79,7 @@ export class Route {
             return;
         }
 
-        switch (transitionType) {
+        switch (navigationMode) {
             case 'assign':
                 window.history.pushState({}, '', nextHref);
                 break;
