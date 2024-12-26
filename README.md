@@ -7,7 +7,7 @@ Minimalist router for React apps
     - route links are similar to HTML links
     - route navigation interface is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled
-- Middleware hook for actions ahead of route transition
+- Middleware hook for actions ahead of route navigation
 - Utility hook to make link tags in static HTML content work like SPA route links
 - Compatibility with SSR
 
@@ -209,9 +209,9 @@ The interface of the `route` object consists of the following parts:
     - `.matches(value)`, checking whether the current location matches the given `value`;
     - `.match(value)`, returning matched parameters if the given `value` is a regular expression and `null` if the current location doesn't match the `value`.
 
-## `useTransitionStart()`
+## `useNavigationStart()`
 
-The `useTransitionStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route transition occurs.
+The `useNavigationStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route navigation occurs.
 
 ### Preventing navigation
 
@@ -220,12 +220,12 @@ Common use cases for preventing navigation are: warning about unsaved data befor
 Navigation to another route can be prevented by returning `false` under certain conditions within the hook callback:
 
 ```jsx
-import {useTransitionStart} from 'routescape';
+import {useNavigationStart} from 'routescape';
 
 let App = () => {
     let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
 
-    useTransitionStart(() => {
+    useNavigationStart(() => {
         if (hasUnsavedChanges)
             return false;
     }, [hasUnsavedChanges]);
@@ -243,10 +243,10 @@ In this example, all route navigation is interrupted as long as `hasUnsavedChang
 Redirection to another route can be done by calling `route.assign()` within the hook callback:
 
 ```jsx
-import {useTransitionStart} from 'routescape';
+import {useNavigationStart} from 'routescape';
 
 let App = () => {
-    useTransitionStart(nextHref => {
+    useNavigationStart(nextHref => {
         if (nextHref === '/intro') {
             route.assign('/');
             return false;
@@ -259,21 +259,21 @@ let App = () => {
 };
 ```
 
-Note that the hook callback returns `false` when `nextHref` is `'/intro'`. This prevents the transition to `/intro`.
+Note that the hook callback returns `false` when `nextHref` is `'/intro'`. This prevents the navigation to `/intro`.
 
 The callback might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
 
-## `useTransitionComplete()`
+## `useNavigationComplete()`
 
-The callback of the `useTransitionComplete()` hook is called after going through all routing middleware registered with the `useTransitionStart()` hook and after assigning the next route.
+The callback of the `useNavigationComplete()` hook is called after going through all routing middleware registered with the `useNavigationStart()` hook and after assigning the next route.
 
-The `useTransitionComplete()` callback is first called when the component gets mounted if the route is already in the transition-complete state (which is normally the case).
+The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state (which is normally the case).
 
 ```jsx
-import {useTransitionComplete} from 'routescape';
+import {useNavigationComplete} from 'routescape';
 
 let App = () => {
-    useTransitionComplete(href => {
+    useNavigationComplete(href => {
         if (href === '/intro')
             document.title = 'Intro';
     }, []);
