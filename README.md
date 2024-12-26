@@ -7,15 +7,39 @@ Minimalist router for React apps
     - route links are similar to HTML links
     - route navigation interface is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled
-- Middleware for actions ahead of route transition
+- Middleware hook for actions ahead of route transition
 - Utility hook to make link tags in static HTML content work like SPA route links
 - Compatibility with SSR
 
 Installation: `npm i routescape`
 
-## Links and route matching
+## `<A>`
 
-The route link components `<A>` and `<Area>` enabling SPA navigation have the same props as their HTML counterparts: `<a>` and `<area>`. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
+The route link component `<A>` enabling SPA navigation has the same props as its HTML counterpart: the `<a>` tag. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
+
+```jsx
+import {A} from 'routescape';
+
+let Nav = () => (
+    <nav>
+        <A href="/intro">Intro</A>
+    </nav>
+);
+```
+
+### Navigation mode
+
+By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"` a link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
+
+## `<Area>`
+
+`<Area>`, the image map route link component, has the same props and semantics as its HTML counterpart: the `<area>` tag. Setting the optional `data-navigation-mode="replace"` prop on `<Area>` has the same effect as with `<A>`.
+
+## `useRoute()`
+
+### Route matching
+
+The functional route matching with the function returned from the `useRoute()` hook offers a simple and consistent way to render both components and prop values based on the current location.
 
 ```jsx
 import {A, useRoute} from 'routescape';
@@ -39,8 +63,6 @@ let App = () => {
     );
 };
 ```
-
-The functional route matching by means of `withRoute()` offers a simple and consistent way to render both components and props based on the current location.
 
 Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function. `withRoute('/intro', x)` returns `x` only if the current location is `/intro`.
 
@@ -93,11 +115,7 @@ let Nav = () => {
 };
 ```
 
-### Navigation mode
-
-By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"` a link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
-
-## Route parameters
+### Route parameters
 
 `withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions.
 
@@ -120,7 +138,7 @@ let App = () => {
 };
 ```
 
-## Unknown routes
+### Unknown routes
 
 The fallback parameter of `withRoute()` is also a way to handle unknown routes:
 
@@ -164,7 +182,7 @@ Note that the last `withRoute()` results in `null` (that is no content) for all 
 
 Although the routes are grouped together in the example above, that's not a requirement. `withRoute()` calls are not coupled together, they can be split across separate components and files and arranged in any order (like any other conditionally rendered components).
 
-## Imperative route navigation
+### Imperative route navigation
 
 To jump to another route programmatically, there's the `route` object returned from the `useRoute()` hook:
 
@@ -191,7 +209,105 @@ The interface of the `route` object consists of the following parts:
     - `.matches(value)`, checking whether the current location matches the given `value`;
     - `.match(value)`, returning matched parameters if the given `value` is a regular expression and `null` if the current location doesn't match the `value`.
 
-## Location provider
+## `useTransitionStart()`
+
+The `useTransitionStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route transition occurs.
+
+### Preventing navigation
+
+Common use cases for preventing navigation are: warning about unsaved data before leaving the page or opening a preview widget for certain links instead of jumping to a new full-screen page.
+
+Navigation to another route can be prevented by returning `false` under certain conditions within the hook callback:
+
+```jsx
+import {useTransitionStart} from 'routescape';
+
+let App = () => {
+    let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
+
+    useTransitionStart(() => {
+        if (hasUnsavedChanges)
+            return false;
+    }, [hasUnsavedChanges]);
+
+    return (
+        // app content
+    );
+};
+```
+
+In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
+
+### Redirection
+
+Redirection to another route can be done by calling `route.assign()` within the hook callback:
+
+```jsx
+import {useTransitionStart} from 'routescape';
+
+let App = () => {
+    useTransitionStart(nextHref => {
+        if (nextHref === '/intro') {
+            route.assign('/');
+            return false;
+        }
+    }, [route]);
+
+    return (
+        // app content
+    );
+};
+```
+
+Note that the hook callback returns `false` when `nextHref` is `'/intro'`. This prevents the transition to `/intro`.
+
+The callback might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
+
+## `useTransitionComplete()`
+
+The callback of the `useTransitionComplete()` hook is called after going through all routing middleware registered with the `useTransitionStart()` hook and after assigning the next route.
+
+The `useTransitionComplete()` callback is first called when the component gets mounted if the route is already in the transition-complete state (which is normally the case).
+
+```jsx
+import {useTransitionComplete} from 'routescape';
+
+let App = () => {
+    useTransitionComplete(href => {
+        if (href === '/intro')
+            document.title = 'Intro';
+    }, []);
+
+    return (
+        // app content
+    );
+};
+```
+
+## `useRouteLinks()`
+
+A chunk of static HTML content is an example where the route link component `<A>` can't be directly used but it still might be desirable to make plain HTML links in that content behave as SPA route links. The `useRouteLinks()` hook can be helpful here:
+
+```jsx
+import {useRef} from 'react';
+import {useRouteLinks} from 'routescape';
+
+let Content = ({value}) => {
+    let containerRef = useRef(null);
+
+    useRouteLinks(containerRef, 'a');
+
+    return (
+        <div ref={containerRef}>
+            {value}
+        </div>
+    );
+};
+```
+
+In this example, the `useRouteLinks()` hook makes all links matching the selector `'a'` inside the container referenced by `containerRef` act as SPA route links.
+
+## `<Router>`
 
 Server-side rendering and unit tests are the examples of the environments lacking a global location (such as `window.location`). They are the prime use cases for the location provider, `<Router>`.
 
@@ -224,66 +340,7 @@ Both `route` and `withRoute()` returned from `useRoute()` operate based on the r
 
 `<Router>` can be used with client-side rendering as well. In most cases, it is unnecessary since by default the route context takes the global location from `window.location` if it's available.
 
-## Actions before route transition (middleware)
-
-The `route.use()` method allows to define routing *middleware*, that is intermediate actions to be done before the route transition occurs.
-
-`route.use()` returns an unsubscription function which is handy to pass as a returned value of a React Effect callback.
-
-### Preventing navigation
-
-Common use cases for preventing navigation are: warning about unsaved data or opening a preview widget for certain links.
-
-Navigation to another route can be prevented by returning `false` under certain conditions within a middleware:
-
-```jsx
-let App = () => {
-    let [route, withRoute] = useRoute();
-    let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
-
-    useEffect(() => {
-        return route.use(() => {
-            if (hasUnsavedChanges)
-                return false;
-        });
-    }, [route, hasUnsavedChanges]);
-
-    return (
-        // app content
-    );
-};
-```
-
-In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
-
-### Redirection
-
-Redirection to another route can be done by calling `route.assign()` within a middleware:
-
-```jsx
-let App = () => {
-    let [route, withRoute] = useRoute();
-
-    useEffect(() => {
-        return route.use(nextHref => {
-            if (nextHref === '/intro') {
-                route.assign('/');
-                return false;
-            }
-        });
-    }, [route]);
-
-    return (
-        // app content
-    );
-};
-```
-
-Note that the middleware callback returns `false` when `nextHref` is `'/intro'`. This prevents the transition to `/intro`.
-
-The middleware might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
-
-## Custom routing
+### Custom routing
 
 The location provider component `<Router>` can be used to redefine the route matching behavior.
 
@@ -307,26 +364,3 @@ let App = () => (
 By default, routing relies on the entire URL. In this example, we've redefined this behavior to disregard the `search` and `hash` portions of the URL.
 
 Extending the `Route` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
-
-## Converting plain links to route links
-
-A chunk of static HTML content is an example where the route link component `<A>` can't be directly used but it still might be desirable to make plain HTML links in that content behave as SPA route links. The `useRouteLinks()` hook can be helpful here:
-
-```jsx
-import {useRef} from 'react';
-import {useRouteLinks} from 'routescape';
-
-let Content = ({value}) => {
-    let containerRef = useRef(null);
-
-    useRouteLinks(containerRef, 'a');
-
-    return (
-        <div ref={containerRef}>
-            {value}
-        </div>
-    );
-};
-```
-
-In this example, the `useRouteLinks()` hook makes all links matching the selector `'a'` inside the container referenced by `containerRef` act as SPA route links.
