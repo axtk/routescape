@@ -8,7 +8,7 @@ export function useNavigationComplete(handler: NavigationHandler, deps: Dependen
     let callback = useMemo(() => handler, deps);
 
     useEffect(() => {
-        if (!initedRef.current) {
+        if (!initedRef.current && route.initialized) {
             callback(route.href, '');
 
             initedRef.current = true;
