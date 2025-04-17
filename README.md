@@ -4,8 +4,8 @@ Minimalist router for React apps
 
 - Single way to match routes for components and prop values
 - Consistency with native APIs:
-    - route links are similar to HTML links
-    - route navigation interface is similar to `window.location`
+    - the route link component is similar to an HTML link
+    - the route navigation interface is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled
 - Middleware hook for actions ahead of route navigation
 - Utility hook to make link tags in static HTML content work like SPA route links
