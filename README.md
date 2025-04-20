@@ -211,11 +211,11 @@ The interface of the `route` object consists of the following parts:
 
 ## `useNavigationStart()`
 
-The `useNavigationStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route navigation occurs.
+The `useNavigationStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route navigation occurs. The following couple of sections show the common examples of what can be handled with routing middleware.
 
 ### Preventing navigation
 
-Common use cases for preventing navigation are: warning about unsaved data before leaving the page or opening a preview widget for certain links instead of jumping to a new full-screen page.
+The common use cases for preventing navigation are: showing a warning about unsaved data before leaving the page or opening a preview widget for certain links instead of jumping to a new full-screen page.
 
 Navigation to another route can be prevented by returning `false` under certain conditions within the hook callback:
 
@@ -236,7 +236,7 @@ let App = () => {
 };
 ```
 
-In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
+In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`. (The second parameter in `useNavigationStart()` is an array of dependencies of the callback passed to the first parameter.)
 
 ### Redirection
 
@@ -283,6 +283,8 @@ let App = () => {
     );
 };
 ```
+
+In this example, we're setting the document title according to the current route location once the route navigation is complete. (The second parameter in `useNavigationComplete()` is an array of dependencies of the callback passed to the first parameter.)
 
 ## `useRouteLinks()`
 
