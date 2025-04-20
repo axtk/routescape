@@ -207,7 +207,7 @@ The interface of the `route` object consists of the following parts:
     - `.back()`, `.forward()`, `.go(delta)`, corresponding to the [`history` methods](https://developer.mozilla.org/en-US/docs/Web/API/History#instance_methods);
 - route matching:
     - `.matches(value)`, checking whether the current location matches the given `value`;
-    - `.match(value)`, returning matched parameters if the given `value` is a regular expression and `null` if the current location doesn't match the `value`.
+    - `.match(value)`, accepting various types of location patterns (`string | RegExp | (string | RegExp)[]`) and returning an object containing the matched parameters or `null` if the current location doesn't match the `value`.
 
 ## `useNavigationStart()`
 
