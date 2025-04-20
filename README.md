@@ -2,7 +2,7 @@
 
 Minimalist router for React apps
 
-- Single way to match routes for components and prop values
+- Single way to match routes in components and prop values
 - Consistency with native APIs:
     - the route link component is similar to an HTML link
     - the route navigation interface is similar to `window.location`
