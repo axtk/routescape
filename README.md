@@ -13,7 +13,9 @@ Minimalist router for React apps
 
 Installation: `npm i routescape`
 
-## `<A>`
+## Route link component
+
+### `<A>`
 
 The route link component `<A>` enabling SPA navigation has the same props as its HTML counterpart: the `<a>` tag. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
 
@@ -27,13 +29,13 @@ let Nav = () => (
 );
 ```
 
+### `<Area>`
+
+`<Area>`, the image map route link component, has the same props and semantics as its HTML counterpart: the `<area>` tag.
+
 ### Navigation mode
 
-By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"` a link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
-
-## `<Area>`
-
-`<Area>`, the image map route link component, has the same props and semantics as its HTML counterpart: the `<area>` tag. Setting the optional `data-navigation-mode="replace"` prop on `<Area>` has the same effect as with `<A>`.
+By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"`, a route link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
 
 ## `useRoute()`
 
