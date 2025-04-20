@@ -23,6 +23,7 @@
     "type": "git",
     "url": "git://github.com/axtk/routescape.git"
   },
+  "homepage": "https://routescape.js.org",
   "author": "axtk",
   "license": "MIT",
   "peerDependencies": {
