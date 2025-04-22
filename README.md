@@ -17,7 +17,7 @@ Installation: `npm i routescape`
 
 ### `<A>`
 
-The route link component `<A>` enabling SPA navigation has the same props as its HTML counterpart: the `<a>` tag. Apart from reducing some cognitive load, this allows to quickly migrate from plain HTML links to route links (or the other way around).
+The route link component `<A>` enabling SPA navigation has the same props as the HTML link tag `<a>`. Apart from reducing some cognitive load, sticking to the same markup interface allows to quickly migrate from plain HTML links to route links (or the other way around).
 
 ```jsx
 import {A} from 'routescape';
@@ -31,7 +31,7 @@ let Nav = () => (
 
 ### `<Area>`
 
-`<Area>`, the image map route link component, has the same props and semantics as its HTML counterpart: the `<area>` tag.
+`<Area>`, the image map route link component, has the same props and semantics as the HTML image map tag `<area>`, with the SPA navigation enabled.
 
 ### Navigation mode
 
