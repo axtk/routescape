@@ -13,7 +13,7 @@ import {RouteContext} from './RouteContext';
  * or a collection of HTML elements.
  */
 export function useRouteLinks(
-    scopeRef: RefObject<Element | Document | null | undefined>,
+    containerRef: RefObject<Element | Document | null | undefined>,
     links: string | Node | (string | Node)[] | HTMLCollection | NodeList,
 ): void {
     let route = useContext(RouteContext);
@@ -23,9 +23,9 @@ export function useRouteLinks(
             if (event.defaultPrevented)
                 return;
 
-            let scope = scopeRef.current;
+            let container = containerRef.current;
 
-            if (!scope)
+            if (!container)
                 return;
 
             let elements = (isArrayLike(links) ? Array.from(links) : [links])
@@ -41,7 +41,7 @@ export function useRouteLinks(
 
                     if (
                         isLinkElement(element) &&
-                        scope.contains(element) &&
+                        container.contains(element) &&
                         isRouteEvent(event, element)
                     )
                         items.push(element);
@@ -66,5 +66,5 @@ export function useRouteLinks(
         return () => {
             document.removeEventListener('click', handleClick);
         };
-    }, [route, links, scopeRef]);
+    }, [route, links, containerRef]);
 }
