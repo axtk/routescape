@@ -14,7 +14,12 @@ import {RouteContext} from './RouteContext';
  */
 export function useRouteLinks(
     containerRef: RefObject<Element | Document | null | undefined>,
-    links: string | Node | (string | Node)[] | HTMLCollection | NodeList,
+    /**
+     * A selector, or an HTML element, or a collection thereof.
+     *
+     * @defaultValue 'a, area'
+     */
+    links: string | Node | (string | Node)[] | HTMLCollection | NodeList = 'a, area',
 ): void {
     let route = useContext(RouteContext);
 
