@@ -245,9 +245,11 @@ In this example, all route navigation is interrupted as long as `hasUnsavedChang
 Redirection to another route can be done by calling `route.assign()` within the hook callback:
 
 ```jsx
-import {useNavigationStart} from 'routescape';
+import {useNavigationStart, useRoute} from 'routescape';
 
 let App = () => {
+    let [route] = useRoute();
+
     useNavigationStart(nextHref => {
         if (nextHref === '/intro') {
             route.assign('/');
