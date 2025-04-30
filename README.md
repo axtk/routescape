@@ -8,7 +8,7 @@ Minimalist router for React apps
     - the route navigation interface of the [`route`](#imperative-route-navigation) object is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled (`withRoute()` can be used anywhere in a component with any route pattern)
 - Middleware hooks for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
-- Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(ref, selector)`](#useroutelinks)
+- Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector)`](#useroutelinks)
 - Compatibility with SSR
 
 Installation: `npm i routescape`
