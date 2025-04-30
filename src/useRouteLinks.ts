@@ -6,8 +6,8 @@ import {getNavigationMode} from './getNavigationMode';
 import {RouteContext} from './RouteContext';
 
 /**
- * Subscribes links to route changes to enable history navigation
- * without page reloading.
+ * Converts plain HTML links to route links, with history navigation
+ * without full page reloads enabled.
  *
  * The links can be represented as a selector, or an HTML element,
  * or a collection of HTML elements.
