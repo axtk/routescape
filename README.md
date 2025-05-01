@@ -8,7 +8,7 @@ Minimalist router for React apps
     - the route navigation interface of the [`route`](#imperative-route-navigation) object is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled (`withRoute()` can be used anywhere in a component with any route pattern)
 - Middleware hooks for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
-- Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector)`](#useroutelinks)
+- Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
 - Compatibility with SSR
 
 Installation: `npm i routescape`
@@ -307,7 +307,7 @@ import {useRouteLinks} from 'routescape';
 let Content = ({value}) => {
     let containerRef = useRef(null);
 
-    useRouteLinks(containerRef, 'a');
+    useRouteLinks(containerRef);
 
     return (
         <div ref={containerRef}>
@@ -317,7 +317,13 @@ let Content = ({value}) => {
 };
 ```
 
-In this example, the `useRouteLinks()` hook makes all links matching the selector `'a'` inside the container referenced by `containerRef` act as SPA route links.
+In this example, the `useRouteLinks()` hook makes all HTML links inside the container referenced by `containerRef` act as SPA route links.
+
+To be more specific as to which elements in the container should be converted to route links, a selector, or an HTML element, or a collection thereof, can be passed as the second parameter of `useRouteLinks()`:
+
+```js
+useRouteLinks(containerRef, '.content a');
+```
 
 ## `<Router>`
 
