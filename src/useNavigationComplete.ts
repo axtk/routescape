@@ -1,11 +1,10 @@
-import {DependencyList, useContext, useMemo, useEffect, useRef} from 'react';
+import {useContext, useEffect, useRef} from 'react';
 import type {NavigationHandler} from '../lib/url/NavigationHandler';
 import {RouteContext} from './RouteContext';
 
-export function useNavigationComplete(handler: NavigationHandler, deps: DependencyList) {
+export function useNavigationComplete(callback: NavigationHandler) {
     let initedRef = useRef(false);
     let route = useContext(RouteContext);
-    let callback = useMemo(() => handler, deps);
 
     useEffect(() => {
         if (!initedRef.current && route.initialized) {

@@ -227,10 +227,12 @@ import {useNavigationStart} from 'routescape';
 let App = () => {
     let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
 
-    useNavigationStart(() => {
+    let handleNavigationStart = useCallback(() => {
         if (hasUnsavedChanges)
             return false;
     }, [hasUnsavedChanges]);
+
+    useNavigationStart(handleNavigationStart);
 
     return (
         // app content
@@ -238,7 +240,7 @@ let App = () => {
 };
 ```
 
-In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`. (The second parameter in `useNavigationStart()` is an array of dependencies of the callback passed to the first parameter.)
+In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
 
 ### Redirection
 
@@ -250,12 +252,14 @@ import {useNavigationStart, useRoute} from 'routescape';
 let App = () => {
     let [route] = useRoute();
 
-    useNavigationStart(nextHref => {
+    let handleNavigationStart = useCallback(nextHref => {
         if (nextHref === '/intro') {
             route.assign('/');
             return false;
         }
     }, [route]);
+
+    useNavigationStart(handleNavigationStart);
 
     return (
         // app content
@@ -276,11 +280,13 @@ The `useNavigationComplete()` callback is first called when the component gets m
 ```jsx
 import {useNavigationComplete} from 'routescape';
 
+function handleNavigationComplete(href) {
+    if (href === '/intro')
+        document.title = 'Intro';
+}
+
 let App = () => {
-    useNavigationComplete(href => {
-        if (href === '/intro')
-            document.title = 'Intro';
-    }, []);
+    useNavigationComplete(handleNavigationComplete);
 
     return (
         // app content
@@ -288,7 +294,7 @@ let App = () => {
 };
 ```
 
-In this example, we're setting the document title according to the current route location once the route navigation is complete. (The second parameter in `useNavigationComplete()` is an array of dependencies of the callback passed to the first parameter.)
+In this example, we're setting the document title according to the current route location once the route navigation is complete.
 
 ## `useRouteLinks()`
 
