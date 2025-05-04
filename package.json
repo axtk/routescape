@@ -11,7 +11,7 @@
     "gh-pages": "npx ghstage --color-scheme=steelblue --theme=tiles --ymid=101149630 --jsorg",
     "prepublishOnly": "npm-run-all build gh-pages",
     "preversion": "npm-run-all shape build",
-    "shape": "npx codeshape src lib index.ts"
+    "shape": "npx codeshape"
   },
   "keywords": [
     "react",
