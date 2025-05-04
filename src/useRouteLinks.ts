@@ -1,9 +1,9 @@
-import {RefObject, useContext, useEffect} from 'react';
+import {type RefObject, useContext, useEffect} from 'react';
 import {isArrayLike} from '../lib/isArrayLike';
 import {isLinkElement} from '../lib/isLinkElement';
 import {isRouteEvent} from '../lib/isRouteEvent';
-import {getNavigationMode} from './getNavigationMode';
 import {RouteContext} from './RouteContext';
+import {getNavigationMode} from './getNavigationMode';
 
 /**
  * Converts plain HTML links to route links, with history navigation
@@ -19,43 +19,46 @@ export function useRouteLinks(
      *
      * @defaultValue 'a, area'
      */
-    links: string | Node | (string | Node)[] | HTMLCollection | NodeList = 'a, area',
+    links:
+        | string
+        | Node
+        | (string | Node)[]
+        | HTMLCollection
+        | NodeList = 'a, area',
 ): void {
     let route = useContext(RouteContext);
 
     useEffect(() => {
         let handleClick = (event: MouseEvent) => {
-            if (event.defaultPrevented)
-                return;
+            if (event.defaultPrevented) return;
 
             let container = containerRef.current;
 
-            if (!container)
-                return;
+            if (!container) return;
 
-            let elements = (isArrayLike(links) ? Array.from(links) : [links])
-                .reduce<(HTMLAnchorElement | HTMLAreaElement)[]>((items, item) => {
-                    let element: Node | null = null;
+            let elements = (
+                isArrayLike(links) ? Array.from(links) : [links]
+            ).reduce<(HTMLAnchorElement | HTMLAreaElement)[]>((items, item) => {
+                let element: Node | null = null;
 
-                    if (typeof item === 'string') {
-                        element = event.target instanceof Element
+                if (typeof item === 'string') {
+                    element =
+                        event.target instanceof Element
                             ? event.target.closest(item)
                             : null;
-                    }
-                    else element = item;
+                } else element = item;
 
-                    if (
-                        isLinkElement(element) &&
-                        container.contains(element) &&
-                        isRouteEvent(event, element)
-                    )
-                        items.push(element);
+                if (
+                    isLinkElement(element) &&
+                    container.contains(element) &&
+                    isRouteEvent(event, element)
+                )
+                    items.push(element);
 
-                    return items;
-                }, []);
+                return items;
+            }, []);
 
-            if (elements.length === 0)
-                return;
+            if (elements.length === 0) return;
 
             let element = elements[0];
 

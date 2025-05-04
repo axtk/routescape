@@ -1,7 +1,9 @@
 import type {NavigationMode} from './NavigationMode';
 
-export type NavigationHandler = (
+type Handler<R> = (
     nextHref: string,
     prevHref: string,
     navigationMode?: NavigationMode,
-) => boolean | void | undefined | Promise<boolean | void | undefined>;
+) => R | Promise<R>;
+
+export type NavigationHandler = Handler<boolean | undefined> | Handler<void>;

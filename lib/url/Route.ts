@@ -2,13 +2,13 @@ import type {MatchHandler} from '../match/MatchHandler';
 import type {MatchParams} from '../match/MatchParams';
 import {matchPattern} from '../match/matchPattern';
 import {push} from '../push';
-import {getHrefSegment} from './getHrefSegment';
-import {getPath} from './getPath';
-import {isSameOrigin} from './isSameOrigin';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationValue} from './LocationValue';
 import type {NavigationHandler} from './NavigationHandler';
 import type {NavigationMode} from './NavigationMode';
+import {getHrefSegment} from './getHrefSegment';
+import {getPath} from './getPath';
+import {isSameOrigin} from './isSameOrigin';
 
 export class Route {
     href = '';
@@ -38,7 +38,10 @@ export class Route {
         return push(this._middleware, middleware);
     }
 
-    async dispatch(location?: LocationValue, navigationMode?: NavigationMode): Promise<void> {
+    async dispatch(
+        location?: LocationValue,
+        navigationMode?: NavigationMode,
+    ): Promise<void> {
         let prevHref = this.href;
         let nextHref = this.getHref(location);
 
@@ -54,16 +57,17 @@ export class Route {
         for (let listener of this._listeners) {
             let result = listener(nextHref, prevHref, navigationMode);
 
-            if (result instanceof Promise)
-                await result;
+            if (result instanceof Promise) await result;
         }
     }
 
     transition: NavigationHandler = (nextHref, _prevHref, navigationMode) => {
-        if (typeof window === 'undefined')
-            return;
+        if (typeof window === 'undefined') return;
 
-        if (!this.initialized && this.getHref(window.location.href) === nextHref)
+        if (
+            !this.initialized &&
+            this.getHref(window.location.href) === nextHref
+        )
             return;
 
         if (!window.history || !isSameOrigin(nextHref)) {
@@ -87,7 +91,7 @@ export class Route {
                 window.history.replaceState({}, '', nextHref);
                 break;
         }
-    }
+    };
 
     /**
      * Matches the current location against the location pattern.

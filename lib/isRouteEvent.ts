@@ -1,4 +1,7 @@
-import type {MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent} from 'react';
+import type {
+    MouseEvent as ReactMouseEvent,
+    TouchEvent as ReactTouchEvent,
+} from 'react';
 import {isSameOrigin} from './url/isSameOrigin';
 
 export type LinkProps = {
@@ -12,7 +15,10 @@ export function isRouteEvent(
 ): boolean {
     return (
         (!('button' in event) || event.button === 0) &&
-        !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey &&
+        !event.ctrlKey &&
+        !event.shiftKey &&
+        !event.altKey &&
+        !event.metaKey &&
         (!target || target === '_self') &&
         (!href || isSameOrigin(href))
     );

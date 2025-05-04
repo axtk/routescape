@@ -10,15 +10,12 @@ export class SimpleURL {
     hash: string;
 
     constructor(location: string, origin?: string) {
-        if (location !== null && location !== undefined && typeof location !== 'string')
-            location = String(location);
-
-        if (origin !== null && origin !== undefined && typeof origin !== 'string')
-            origin = String(origin);
-
-        let urlRegExp = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/;
-        let locationParts = (location && location.match(urlRegExp)) || [];
-        let originParts = (origin && origin.match(urlRegExp)) || [];
+        let urlRegExp =
+            /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/;
+        let locationParts =
+            (location ? String(location).match(urlRegExp) : null) || [];
+        let originParts =
+            (origin ? String(origin).match(urlRegExp) : null) || [];
 
         if (!locationParts[4] && !originParts[4])
             throw new Error('Invalid URL');
@@ -27,7 +24,8 @@ export class SimpleURL {
             ? locationParts[1] + locationParts[3]
             : originParts[1] + originParts[3];
 
-        this.pathname = ((locationParts[5] || '').startsWith('/') ? '' : '/') +
+        this.pathname =
+            ((locationParts[5] || '').startsWith('/') ? '' : '/') +
             (locationParts[5] || '');
 
         this.search = locationParts[6] || '';

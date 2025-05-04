@@ -7,12 +7,14 @@ export const getPath = (
     location: LocationValue,
     pathProps: PathProps = {},
 ): string => {
-    let url = location === undefined || location === null
-        ? typeof window === 'undefined' ? undefined : new IsomorphicURL(window.location.href)
-        : new IsomorphicURL(location, syntheticOrigin);
+    let url =
+        location === undefined || location === null
+            ? typeof window === 'undefined'
+                ? undefined
+                : new IsomorphicURL(window.location.href)
+            : new IsomorphicURL(location, syntheticOrigin);
 
-    if (!url)
-        return '';
+    if (!url) return '';
 
     return (
         (pathProps.pathname === false ? '' : url.pathname) +

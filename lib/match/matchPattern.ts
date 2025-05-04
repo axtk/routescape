@@ -8,7 +8,10 @@ function toObject(x: string[]) {
     }, {});
 }
 
-export function matchPattern(pattern: unknown, value: unknown): MatchParams | null {
+export function matchPattern(
+    pattern: unknown,
+    value: unknown,
+): MatchParams | null {
     if (Array.isArray(pattern)) {
         for (let p of pattern) {
             let matches = matchPattern(p, value);
@@ -29,8 +32,7 @@ export function matchPattern(pattern: unknown, value: unknown): MatchParams | nu
             } as MatchParams;
     }
 
-    if (pattern === '*' || pattern === value)
-        return {} as MatchParams;
+    if (pattern === '*' || pattern === value) return {} as MatchParams;
 
     return null;
 }
