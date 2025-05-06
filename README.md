@@ -2,13 +2,13 @@
 
 Minimalist router for React apps
 
-- Single way to match routes in components and prop values: [`withRoute(routePattern, x, y)`](#useroute) acts similar to the conditional operator `condition ? x : y`
+- Single way to match routes in components and prop values: [`withRoute(routePattern, x, y)`](#useroute) embodies route matching similar to the conditional operator `condition ? x : y`
 - Similar to native APIs:
     - the route link components [`<A>`](#a) and [`<Area>`](#area) are similar to the HTML link tags `<a>` and `<area>`
     - the route navigation interface of the [`route`](#imperative-route-navigation) object is similar to `window.location`
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled (`withRoute()` can be used anywhere in a component with any route pattern)
 - Middleware hooks for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
-- Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
+- Utility hook to convert HTML links to SPA route links within static HTML content: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
 - Straightforward [lazy routes](#lazy-routes)
 - [Compatible with SSR](#router)
 
