@@ -10,7 +10,7 @@ Minimalist router for React apps
 - Middleware hooks for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
 - Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
 - Straightforward [lazy routes](#lazy-routes)
-- Compatibility with SSR
+- [Compatibility with SSR](#router)
 
 Installation: `npm i routescape`
 
