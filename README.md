@@ -9,6 +9,7 @@ Minimalist router for React apps
 - Unopinionated route structure: routes are not necessarily hierarchical, collocated or otherwise tightly coupled (`withRoute()` can be used anywhere in a component with any route pattern)
 - Middleware hooks for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
 - Utility hook to make link tags in static HTML content act like SPA route links: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
+- Straightforward [lazy routes](#lazy-routes)
 - Compatibility with SSR
 
 Installation: `npm i routescape`
@@ -382,3 +383,66 @@ let App = () => (
 By default, routing relies on the entire URL. In this example, we've redefined this behavior to disregard the `search` and `hash` portions of the URL.
 
 Extending the `Route` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
+
+## Lazy routes
+
+Lazy routes are routes whose content is loaded on demand, when the route is visited.
+
+Enabling lazy routes doesn't require a specific routing setup. It's a combination of the [route matching](#useroute) and lazily loaded React components (with `React.lazy()` and React's `<Suspense>`), processed by a code-splitting-capable build tool (like Esbuild, Webpack, Rollup, Vite):
+
+```diff
++ import {Suspense} from 'react';
+  import {A, useRoute} from 'routescape';
+  import {Intro} from './Intro';
+- import {Projects} from './Projects';
++ import {Projects} from './Projects.lazy';
+
+export const App = () => {
+    let [, withRoute] = useRoute();
+
+    return (
+        <>
+            <nav>
+                <A href="/">Intro</A>
+                <A href="/projects">Projects</A>
+            </nav>
+            {withRoute('/', (
+                <Intro/>
+            ))}
+            {withRoute('/projects', (
+-               <Projects/>
++               <Suspense fallback={<p>Loading...</p>}>
++                   <Projects/>
++               </Suspense>
+            ))}
+        </>
+    );
+};
+```
+
+```diff
++ // Projects.lazy.js
++ import {lazy} from 'react';
++
++ export const Projects = lazy(() => import('./Projects'));
+```
+
+```diff
+// Projects.jsx
+export const Projects = () => {
+    <main>
+        <h1>Projects</h1>
+    </main>
+};
+```
+
+```diff
+// Intro.jsx
+export const Intro = () => (
+    <main>
+        <h1>Intro</h1>
+    </main>
+);
+```
+
+In this example, the `<Projects>` component isn't loaded until the corresponding `/projects` route is visited. When it's first visited, while the component is being fetched, `<p>Loading...</p>` shows up, as specified with the `fallback` prop of `<Suspense>`.
