@@ -365,7 +365,7 @@ The location provider component `<Router>` can be used to redefine the route mat
 ```jsx
 import {Route, getPath, Router} from 'routescape';
 
-export class PathRoute extends Route {
+class PathRoute extends Route {
     getHref(location) {
         // disregard `search` and `hash`
         return getPath(location, {search: false, hash: false});
@@ -374,7 +374,7 @@ export class PathRoute extends Route {
 
 let App = () => (
     <Router location={new PathRoute(url)}>
-        <AppContent/>
+        <App/>
     </Router>
 );
 ```
