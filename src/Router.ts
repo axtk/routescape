@@ -1,4 +1,4 @@
-import {type ReactNode, createElement} from 'react';
+import {type ReactNode, createElement, useEffect} from 'react';
 import {Route} from '../lib/url/Route';
 import {RouteContext} from './RouteContext';
 
@@ -18,6 +18,8 @@ export const Router = ({location, children}: RouterProps) => {
     )
         route = new Route(location);
     else throw new Error('Router location of unsupported type');
+
+    useEffect(() => () => route.cleanup(), [route]);
 
     return createElement(RouteContext.Provider, {value: route}, children);
 };

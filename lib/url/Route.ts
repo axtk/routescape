@@ -16,14 +16,33 @@ export class Route {
 
     _listeners: NavigationHandler[] = [];
     _middleware: NavigationHandler[] = [];
+    _cleanup: (() => void) | null = null;
 
     constructor(location?: LocationValue) {
-        if (typeof window !== 'undefined')
-            window.addEventListener('popstate', () => this.dispatch());
+        this.init();
 
         Promise.resolve(this.dispatch(location)).then(() => {
             this.initialized = true;
         });
+    }
+
+    init(): void {
+        if (typeof window === 'undefined')
+            return;
+
+        let handleNavigation = () => {
+            this.dispatch();
+        };
+
+        window.addEventListener('popstate', handleNavigation);
+
+        this._cleanup = () => {
+            window.removeEventListener('popstate', handleNavigation);
+        };
+    }
+
+    cleanup(): void {
+        this._cleanup?.();
     }
 
     getHref(location?: LocationValue): string {
