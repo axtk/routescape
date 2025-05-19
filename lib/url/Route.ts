@@ -27,8 +27,7 @@ export class Route {
     }
 
     init(): void {
-        if (typeof window === 'undefined')
-            return;
+        if (typeof window === 'undefined') return;
 
         let handleNavigation = () => {
             this.dispatch();
