@@ -1,22 +1,83 @@
 # routescape
 
-Minimalist router for React apps
+Straightforward router for React apps
 
-- Single way to match routes in components and prop values: [`withRoute(routePattern, x, y)`](#useroute) embodies **route matching similar to the conditional operator** `condition ? x : y`
-- **Similar to native APIs**:
-    - the route link components [`<A>`](#a) and [`<Area>`](#area) are similar to the HTML link tags `<a>` and `<area>`
-    - the route navigation interface of the [`route`](#imperative-route-navigation) object is similar to `window.location`
-- **Unopinionated route structure**: routes are not necessarily hierarchical, collocated or otherwise tightly coupled (`withRoute()` can be used anywhere in a component with any route pattern)
-- **Middleware hooks** for actions before and after route navigation: [`useNavigationStart()`](#usenavigationstart) and [`useNavigationComplete()`](#usenavigationcomplete)
-- Utility hook to **convert HTML links to SPA route links** within static HTML content: [`useRouteLinks(containerRef, selector?)`](#useroutelinks)
-- Straightforward [**lazy routes**](#lazy-routes)
-- [**Compatible with SSR**](#router)
+- Single way to match routes with components and prop values
+- Similar to native APIs
+- Decoupled routes: no hierarchy as a prerequisite
+- Straightforward middleware hooks, lazy routes, SSR
+- Utility hook to convert HTML links to SPA route links
 
 Installation: `npm i routescape`
 
-## Route link component
+## Route matching
 
-### `<A>`
+Routescape offers a simple and consistent way to render both components and prop values based on the current location.
+
+The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern. It also doesn't impose any route hierarchy by default, since `withRoute()` can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
+
+```jsx
+import {useRoute} from 'routescape';
+
+let App = () => {
+    let [route, withRoute] = useRoute();
+
+    // `withRoute(routePattern, x, y)` acts similarly to
+    // `matchesRoutePattern ? x : y`
+    return (
+        <>
+            <header className={withRoute('/', 'full', 'compact')}>
+                <h1>App</h1>
+            </nav>
+            {withRoute('/', (
+                <main>
+                    <h1>Intro</h1>
+                </main>
+            ))}
+            {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({id}) => (
+                <main>
+                    <h1>Section {id}</h1>
+                </main>
+            ))}
+        </>
+    );
+};
+```
+
+Note that both the header's `className` prop and the `<main>` component are rendered in a similar fashion using the same route-matching function.
+
+(With the component-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
+
+`withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
+
+## Route navigation
+
+Routescape's route navigation API is largely aligned with the similar native APIs familiar to most web developers, such as `<a href="/x">` and `window.location`, which helps reduce cognitive load and shorten the migration path from the native APIs:
+
+```diff
++ import {A, useRoute} from 'routescape';
+
+  let UserNav = ({signedIn}) => {
++     let [route] = useRoute();
+
+      let handleClick = () => {
+-         window.location.assign(signedIn ? '/profile' : '/login');
++         route.assign(signedIn ? '/profile' : '/login');
+      };
+
+      return (
+          <nav>
+-             <a href="/">Home</a>
++             <A href="/">Home</A>
+              <button onClick={handleClick}>Profile</button>
+          </nav>
+      );
+  };
+```
+
+### Route link component
+
+#### `<A>`
 
 The route link component `<A>` enabling SPA navigation has the same props as the HTML link tag `<a>`. Apart from reducing some cognitive load, sticking to the same markup interface allows to quickly migrate from plain HTML links to route links (or the other way around).
 
@@ -30,160 +91,13 @@ let Nav = () => (
 );
 ```
 
-### `<Area>`
+#### `<Area>`
 
 `<Area>`, the image map route link component, has the same props and semantics as the HTML image map tag `<area>`, with the SPA navigation enabled.
 
-### Navigation mode
+#### Navigation mode
 
 By default, after the link navigation occurs, the user can navigate back by pressing the browser's *back* button. Optionally, by setting `data-navigation-mode="replace"`, a route link component can be configured to replace the navigation history entry, which will prevent the user from returning to the previous location by clicking the browser's *back* button.
-
-## `useRoute()`
-
-### Route matching
-
-The functional route matching with the function returned from the `useRoute()` hook offers a simple and consistent way to render both components and prop values based on the current location.
-
-```jsx
-import {A, useRoute} from 'routescape';
-
-let App = () => {
-    let [route, withRoute] = useRoute();
-
-    return (
-        <>
-            <nav>
-                <A href="/intro" className={withRoute('/intro', 'active')}>
-                    Intro
-                </A>
-            </nav>
-            {withRoute('/intro', (
-                <main>
-                    <h1>Intro</h1>
-                </main>
-            ))}
-        </>
-    );
-};
-```
-
-Note that both the intro link's `className` and `<main>` are rendered in a similar fashion using the same route-matching function. `withRoute('/intro', x)` returns `x` only if the current location is `/intro`.
-
-(With the component-based route matching adopted by some routers, conditionally rendering a component and marking a link as active via its props have to be handled differently.)
-
-### Route matching fallback
-
-Similarly to the ternary operator `condition ? x : y` (often seen with the general [conditional rendering](https://react.dev/learn/conditional-rendering) pattern), `withRoute()` accepts a fallback value as the optional third parameter: `withRoute(routePattern, x, y)`.
-
-```jsx
-import {A, useRoute} from 'routescape';
-
-let Nav = () => {
-    let [, withRoute] = useRoute();
-
-    return (
-        <nav>
-            <A
-                href="/intro"
-                className={withRoute('/intro', 'active', 'inactive')}
-            >
-                Intro
-            </A>
-        </nav>
-    );
-};
-```
-
-In the example above, the link is marked as `active` if the current location is `/intro`, and `inactive` otherwise.
-
-With the third parameter omitted, `withRoute('/intro', 'active')` results in `undefined` with locations other than `/intro` (since the missing fallback parameter is effectively `undefined`), which is perfectly fine as well.
-
-Another option would be to render a non-interactive `<span>` for the active route, and a route link pointing to that route otherwise:
-
-```jsx
-import {A, useRoute} from 'routescape';
-
-let Nav = () => {
-    let [, withRoute] = useRoute();
-
-    return (
-        <nav>
-            {withRoute(
-                '/intro',
-                <span>Intro</span>,
-                <A href="/intro">Intro<A>,
-            )}
-        </nav>
-    );
-};
-```
-
-### Route parameters
-
-`withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions.
-
-```jsx
-let App = () => {
-    let [, withRoute] = useRoute();
-
-    return (
-        <>
-            <nav>
-                <A href="/intro">Intro</A>
-            </nav>
-            {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({id}) => (
-                <main>
-                    <h1>Section #{id}</h1>
-                </main>
-            ))}
-        </>
-    );
-};
-```
-
-### Unknown routes
-
-The fallback parameter of `withRoute()` is also a way to handle unknown routes:
-
-```jsx
-const routeMap = {
-    intro: '/intro',
-    sections: /^\/section\/(?<id>\d+)\/?$/,
-};
-
-const knownRoutes = Object.values(routeMap);
-
-let App = () => {
-    let [, withRoute] = useRoute();
-
-    return (
-        <>
-            <nav>
-                <A href={routeMap.intro}>Intro</A>
-            </nav>
-            {withRoute(routeMap.intro, (
-                <main>
-                    <h1>Intro</h1>
-                </main>
-            ))}
-            {withRoute(routeMap.sections, ({id}) => (
-                <main>
-                    <h1>Section #{id}</h1>
-                </main>
-            ))}
-            {withRoute(knownRoutes, null, (
-                <main className="error">
-                    <h1>404 Not found</h1>
-                </main>
-            ))}
-        </>
-    );
-};
-```
-
-Note that the last `withRoute()` results in `null` (that is no content) for all known routes and renders the error content for the rest unknown routes.
-
-Although the routes are grouped together in the example above, that's not a requirement. `withRoute()` calls are not coupled together, they can be split across separate components and files and arranged in any order (like any other conditionally rendered components).
 
 ### Imperative route navigation
 
@@ -212,11 +126,13 @@ The interface of the `route` object consists of the following parts:
     - `.matches(value)`, checking whether the current location matches the given `value`;
     - `.match(value)`, accepting various types of location patterns (`string | RegExp | (string | RegExp)[]`) and returning an object containing the matched parameters or `null` if the current location doesn't match the `value`.
 
-## `useNavigationStart()`
+## Routing middleware
+
+### `useNavigationStart()`
 
 The `useNavigationStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route navigation occurs. The following couple of sections show the common examples of what can be handled with routing middleware.
 
-### Preventing navigation
+#### Preventing navigation
 
 The common use cases for preventing navigation are: showing a warning about unsaved data before leaving the page or opening a preview widget for certain links instead of jumping to a new full-screen page.
 
@@ -243,7 +159,7 @@ let App = () => {
 
 In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
 
-### Redirection
+#### Redirection
 
 Redirection to another route can be done by calling `route.assign()` within the hook callback:
 
@@ -272,7 +188,7 @@ Note that the hook callback returns `false` when `nextHref` is `'/intro'`. This 
 
 The callback might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
 
-## `useNavigationComplete()`
+### `useNavigationComplete()`
 
 The callback of the `useNavigationComplete()` hook is called after going through all routing middleware registered with the `useNavigationStart()` hook and after assigning the next route.
 
@@ -297,9 +213,9 @@ let App = () => {
 
 In this example, we're setting the document title according to the current route location once the route navigation is complete.
 
-## `useRouteLinks()`
+## Converting HTML links to SPA route links
 
-A chunk of static HTML content is an example where the route link component `<A>` can't be directly used but it still might be desirable to make plain HTML links in that content behave as SPA route links. The `useRouteLinks()` hook can be helpful here:
+A chunk of static HTML content is an example where the route link component can't be directly used but it still might be desirable to make plain HTML links in that content behave as SPA route links. The `useRouteLinks()` hook can be helpful here:
 
 ```jsx
 import {useRef} from 'react';
@@ -384,6 +300,50 @@ By default, routing relies on the entire URL. In this example, we've redefined t
 
 Extending the `Route` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
 
+## Unknown routes
+
+The fallback parameter of the route-matching function `withRoute(routePattern, x, y)` can be used as a way to handle unknown routes:
+
+```jsx
+const routeMap = {
+    intro: '/intro',
+    sections: /^\/section\/(?<id>\d+)\/?$/,
+};
+
+const knownRoutes = Object.values(routeMap);
+
+let App = () => {
+    let [, withRoute] = useRoute();
+
+    return (
+        <>
+            <nav>
+                <A href={routeMap.intro}>Intro</A>
+            </nav>
+            {withRoute(routeMap.intro, (
+                <main>
+                    <h1>Intro</h1>
+                </main>
+            ))}
+            {withRoute(routeMap.sections, ({id}) => (
+                <main>
+                    <h1>Section #{id}</h1>
+                </main>
+            ))}
+            {withRoute(knownRoutes, null, (
+                <main className="error">
+                    <h1>404 Not found</h1>
+                </main>
+            ))}
+        </>
+    );
+};
+```
+
+Note that the last `withRoute()` results in `null` (that is no content) for all known routes and renders the error content for the rest unknown routes.
+
+Although the routes are grouped together in the example above, that's not a requirement. `withRoute()` calls are not coupled together, they can be split across separate components and files and arranged in any order (like any other conditionally rendered components).
+
 ## Lazy routes
 
 Lazy routes are routes whose content is loaded on demand, when the route is visited.
@@ -425,24 +385,6 @@ export const App = () => {
 + import {lazy} from 'react';
 +
 + export const Projects = lazy(() => import('./Projects'));
-```
-
-```diff
-// Projects.jsx
-export const Projects = () => {
-    <main>
-        <h1>Projects</h1>
-    </main>
-};
-```
-
-```diff
-// Intro.jsx
-export const Intro = () => (
-    <main>
-        <h1>Intro</h1>
-    </main>
-);
 ```
 
 In this example, the `<Projects>` component isn't loaded until the corresponding `/projects` route is visited. When it's first visited, while the component is being fetched, `<p>Loading...</p>` shows up, as specified with the `fallback` prop of `<Suspense>`.
