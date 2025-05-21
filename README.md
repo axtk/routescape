@@ -28,7 +28,7 @@ let App = () => {
         <>
             <header className={withRoute('/', 'full', 'compact')}>
                 <h1>App</h1>
-            </nav>
+            </header>
             {withRoute('/', (
                 <main>
                     <h1>Intro</h1>
