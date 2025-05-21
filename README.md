@@ -44,6 +44,8 @@ let App = () => {
 };
 ```
 
+[Live demo](https://codesandbox.io/p/sandbox/routescape-demo-fqlyhs?file=%2Fsrc%2FApp.js)
+
 Note that both the header's `className` prop and the `<main>` component are rendered in a similar fashion using the same route-matching function.
 
 (With the component-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
