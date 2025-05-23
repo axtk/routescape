@@ -54,7 +54,7 @@ Note that both the header's `className` prop and the `<main>` component are rend
 
 ## Route navigation
 
-Routescape's route navigation API is largely aligned with the similar native APIs familiar to most web developers, such as `<a href="/x">` and `window.location`, which helps reduce cognitive load and shorten the migration path from the native APIs:
+The Routescape's route navigation API is largely aligned with the similar native APIs familiar to most web developers, such as `<a href="/x">` and `window.location`, which helps reduce cognitive load and shorten the migration path from the native APIs:
 
 ```diff
 + import {A, useRoute} from 'routescape';
@@ -106,6 +106,8 @@ By default, after the link navigation occurs, the user can navigate back by pres
 To jump to another route programmatically, there's the `route` object returned from the `useRoute()` hook:
 
 ```jsx
+import {useRoute} from 'routescape';
+
 let ProfileButton = ({signedIn}) => {
     let [route] = useRoute();
 
@@ -282,7 +284,7 @@ Both `route` and `withRoute()` returned from `useRoute()` operate based on the r
 The location provider component `<Router>` can be used to redefine the route matching behavior.
 
 ```jsx
-import {Route, getPath, Router} from 'routescape';
+import {Route, Router, getPath} from 'routescape';
 
 class PathRoute extends Route {
     getHref(location) {
@@ -307,6 +309,8 @@ Extending the `Route` class gives plenty of room for customization. This approac
 The fallback parameter of the route-matching function `withRoute(routePattern, x, y)` can be used as a way to handle unknown routes:
 
 ```jsx
+import {A, useRoute} from 'routescape';
+
 const routeMap = {
     intro: '/intro',
     sections: /^\/section\/(?<id>\d+)\/?$/,
