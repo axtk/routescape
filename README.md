@@ -14,9 +14,7 @@ Installation: `npm i routescape`
 
 ## Route matching
 
-Routescape offers a simple and consistent way to render both components and prop values based on the current location.
-
-The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern. It also doesn't impose any route hierarchy by default, since `withRoute()` can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
+Routescape offers a simple and consistent way to render both components and prop values based on the current location:
 
 ```jsx
 import {useRoute} from 'routescape';
@@ -50,9 +48,11 @@ let App = () => {
 
 Note that both the header's `className` prop and the `<main>` component are rendered in a similar fashion using the same route-matching function.
 
-(With the component-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
+(With the component-based or file-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
 
-`withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
+🔹 The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern. It also doesn't impose any route hierarchy by default, since `withRoute()` can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
+
+🔹 `withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
 
 ## Route navigation
 
