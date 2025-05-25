@@ -1,6 +1,8 @@
+[![npm](https://flat.badgen.net/npm/v/routescape?labelColor=345&color=46e)](https://www.npmjs.com/package/routescape) ![Lightweight](https://flat.badgen.net/bundlephobia/minzip/routescape/?labelColor=345&color=46e) ![TypeScript ✓](https://flat.badgen.net/badge/TypeScript/✓?labelColor=345&color=345) ![SSR ✓](https://flat.badgen.net/badge/SSR/✓?labelColor=345&color=345)
+
 # routescape
 
-Straightforward router for React apps
+*Straightforward and minimalist router for React apps*
 
 - Single way to match routes with components and prop values
 - Similar to native APIs
