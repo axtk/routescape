@@ -348,9 +348,11 @@ let App = () => {
 };
 ```
 
-Note that the last `withRoute()` results in `null` (that is no content) for all known routes and renders the error content for the rest unknown routes.
+The last `withRoute()` in this example results in `null` (that is no content) for all known routes and renders the error content for the rest unknown routes.
 
-Although the routes are grouped together in the example above, that's not a requirement. `withRoute()` calls are not coupled together, they can be split across separate components and files and arranged in any order (like any other conditionally rendered components).
+🔹 `withRoute()` calls don't have to maintain a specific order, and the unknown route handling `withRoute()` doesn't have to be the last.
+
+🔹 `withRoute()` calls don't have to be grouped side by side like in the example above, their collocation is not a requirement. `withRoute()` calls are not coupled together, they can be split across separate components and files (like any other conditionally rendered components).
 
 ## Lazy routes
 
