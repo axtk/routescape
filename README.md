@@ -1,4 +1,4 @@
-[![npm](https://flat.badgen.net/npm/v/routescape?labelColor=345&color=46e)](https://www.npmjs.com/package/routescape) ![Lightweight](https://flat.badgen.net/bundlephobia/minzip/routescape/?labelColor=345&color=46e) ![TypeScript ✓](https://flat.badgen.net/badge/TypeScript/✓?labelColor=345&color=345) ![SSR ✓](https://flat.badgen.net/badge/SSR/✓?labelColor=345&color=345)
+[![npm](https://img.shields.io/npm/v/routescape?labelColor=345&color=46e&style=flat-square)](https://www.npmjs.com/package/routescape) ![Lightweight](https://img.shields.io/bundlephobia/minzip/routescape?labelColor=345&color=46e&style=flat-square) ![TypeScript ✓](https://img.shields.io/badge/TypeScript-✓-345?labelColor=345&color=345&style=flat-square) ![SSR ✓](https://img.shields.io/badge/SSR-✓-345?labelColor=345&color=345&style=flat-square)
 
 # routescape
 
