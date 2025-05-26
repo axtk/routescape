@@ -136,82 +136,32 @@ The interface of the `route` object consists of the following parts:
 
 ## Routing middleware
 
-### `useNavigationStart()`
-
-The `useNavigationStart()` hook allows to define routing *middleware*, that is intermediate actions to be done before the route navigation occurs. The following couple of sections show the common examples of what can be handled with routing middleware.
-
-#### Preventing navigation
-
-The common use cases for preventing navigation are: showing a warning about unsaved data before leaving the page or opening a preview widget for certain links instead of jumping to a new full-screen page.
-
-Navigation to another route can be prevented by returning `false` under certain conditions within the hook callback:
+The Routescape's hooks `useNavigationStart()` and `useNavigationComplete()` define routing *middleware*, that is intermediate actions to be done before and after the route navigation occurs:
 
 ```jsx
-import {useNavigationStart} from 'routescape';
+import {useNavigationComplete, useNavigationStart} from 'routescape';
 
-let App = () => {
-    let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
-
-    let handleNavigationStart = useCallback(() => {
-        if (hasUnsavedChanges)
-            return false;
-    }, [hasUnsavedChanges]);
-
-    useNavigationStart(handleNavigationStart);
-
-    return (
-        // app content
-    );
-};
-```
-
-In this example, all route navigation is interrupted as long as `hasUnsavedChanges` is `true`.
-
-#### Redirection
-
-Redirection to another route can be done by calling `route.assign()` within the hook callback:
-
-```jsx
-import {useNavigationStart, useRoute} from 'routescape';
-
-let App = () => {
-    let [route] = useRoute();
-
-    let handleNavigationStart = useCallback(nextHref => {
-        if (nextHref === '/intro') {
-            route.assign('/');
-            return false;
-        }
-    }, [route]);
-
-    useNavigationStart(handleNavigationStart);
-
-    return (
-        // app content
-    );
-};
-```
-
-Note that the hook callback returns `false` when `nextHref` is `'/intro'`. This prevents the navigation to `/intro`.
-
-The callback might as well contain additional checks before allowing the redirection (like whether the user has access to the target location).
-
-### `useNavigationComplete()`
-
-The callback of the `useNavigationComplete()` hook is called after going through all routing middleware registered with the `useNavigationStart()` hook and after assigning the next route.
-
-The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state.
-
-```jsx
-import {useNavigationComplete} from 'routescape';
-
-function handleNavigationComplete(href) {
+function setTitle(href) {
     if (href === '/intro')
         document.title = 'Intro';
 }
 
 let App = () => {
-    useNavigationComplete(handleNavigationComplete);
+    let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
+    let [route] = useRoute();
+
+    let handleNavigationStart = useCallback(() => {
+        if (hasUnsavedChanges)
+            return false; // prevents navigation
+
+        if (nextHref === '/intro') {
+            route.assign('/'); // redirection
+            return false;
+        }
+    }, [hasUnsavedChanges]);
+
+    useNavigationStart(handleNavigationStart);
+    useNavigationComplete(setTitle);
 
     return (
         // app content
@@ -219,7 +169,9 @@ let App = () => {
 };
 ```
 
-In this example, we're setting the document title according to the current route location once the route navigation is complete.
+This example shows some common examples of what can be handled with routing middleware: preventing navigation with unsaved user input, redirecting to another location, setting the page title based on the current location.
+
+🔹 The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state.
 
 ## Converting HTML links to SPA route links
 
