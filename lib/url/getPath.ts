@@ -9,9 +9,10 @@ export const getPath = (
     let url: URL | null = null;
 
     if (location === undefined || location === null)
-        url = typeof window === 'undefined'
-            ? null
-            : new URL(window.location.href);
+        url =
+            typeof window === 'undefined'
+                ? null
+                : new URL(window.location.href);
     else url = new URL(location, syntheticOrigin);
 
     if (!url) return '';
