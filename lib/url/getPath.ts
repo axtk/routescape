@@ -1,4 +1,3 @@
-import {IsomorphicURL} from './IsomorphicURL';
 import type {LocationValue} from './LocationValue';
 import type {PathProps} from './PathProps';
 import {syntheticOrigin} from './syntheticOrigin';
@@ -11,8 +10,8 @@ export const getPath = (
         location === undefined || location === null
             ? typeof window === 'undefined'
                 ? undefined
-                : new IsomorphicURL(window.location.href)
-            : new IsomorphicURL(location, syntheticOrigin);
+                : new URL(window.location.href)
+            : new URL(location, syntheticOrigin);
 
     if (!url) return '';
 
