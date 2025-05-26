@@ -6,12 +6,13 @@ export const getPath = (
     location: LocationValue,
     pathProps: PathProps = {},
 ): string => {
-    let url =
-        location === undefined || location === null
-            ? typeof window === 'undefined'
-                ? undefined
-                : new URL(window.location.href)
-            : new URL(location, syntheticOrigin);
+    let url: URL | null = null;
+
+    if (location === undefined || location === null)
+        url = typeof window === 'undefined'
+            ? null
+            : new URL(window.location.href);
+    else url = new URL(location, syntheticOrigin);
 
     if (!url) return '';
 
