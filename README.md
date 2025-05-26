@@ -50,7 +50,9 @@ Note that both the header's `className` prop and the `<main>` component are rend
 
 (With the component-based or file-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
 
-🔹 The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern. It also doesn't impose any route hierarchy by default, since `withRoute()` can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
+🔹 The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern.
+
+🔹 `withRoute()` doesn't impose any route hierarchy by default, as it can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
 
 🔹 `withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
 
@@ -83,7 +85,7 @@ The Routescape's route navigation API is largely aligned with the similar native
 
 #### `<A>`
 
-The route link component `<A>` enabling SPA navigation has the same props as the HTML link tag `<a>`. Apart from reducing some cognitive load, sticking to the same markup interface allows to quickly migrate from plain HTML links to route links (or the other way around).
+The route link component `<A>` enabling SPA navigation has the same props as the HTML link tag `<a>`. Apart from reducing some cognitive load, sticking to the similar API allows to quickly migrate from plain HTML links to route links (or the other way around).
 
 ```jsx
 import {A} from 'routescape';
