@@ -150,7 +150,7 @@ let App = () => {
     let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
     let [route] = useRoute();
 
-    let handleNavigationStart = useCallback(() => {
+    let handleNavigationStart = useCallback(nextHref => {
         if (hasUnsavedChanges)
             return false; // prevents navigation
 
@@ -158,7 +158,7 @@ let App = () => {
             route.assign('/'); // redirection
             return false;
         }
-    }, [hasUnsavedChanges]);
+    }, [hasUnsavedChanges, route]);
 
     useNavigationStart(handleNavigationStart);
     useNavigationComplete(setTitle);
