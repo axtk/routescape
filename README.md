@@ -312,7 +312,7 @@ The last `withRoute()` in this example results in `null` (that is no content) fo
 
 Lazy routes are routes whose content is loaded on demand, when the route is visited.
 
-Enabling lazy routes doesn't require a specific routing setup. It's a combination of the [route matching](#useroute) and lazily loaded React components (with `React.lazy()` and React's `<Suspense>`), processed by a code-splitting-capable build tool (like Esbuild, Webpack, Rollup, Vite):
+Enabling lazy routes doesn't require a specific routing setup. It's a combination of the [route matching](#route-matching) and lazily loaded React components (with `React.lazy()` and React's `<Suspense>`), processed by a code-splitting-capable build tool (like Esbuild, Webpack, Rollup, Vite):
 
 ```diff
 + import {Suspense} from 'react';
