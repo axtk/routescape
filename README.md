@@ -321,27 +321,27 @@ Enabling lazy routes doesn't require a specific routing setup. It's a combinatio
 - import {Projects} from './Projects';
 + import {Projects} from './Projects.lazy';
 
-export const App = () => {
-    let [, withRoute] = useRoute();
+  export const App = () => {
+      let [, withRoute] = useRoute();
 
-    return (
-        <>
-            <nav>
-                <A href="/">Intro</A>
-                <A href="/projects">Projects</A>
-            </nav>
-            {withRoute('/', (
-                <Intro/>
-            ))}
-            {withRoute('/projects', (
--               <Projects/>
-+               <Suspense fallback={<p>Loading...</p>}>
-+                   <Projects/>
-+               </Suspense>
-            ))}
-        </>
-    );
-};
+      return (
+          <>
+              <nav>
+                  <A href="/">Intro</A>
+                  <A href="/projects">Projects</A>
+              </nav>
+              {withRoute('/', (
+                  <Intro/>
+              ))}
+              {withRoute('/projects', (
+-                 <Projects/>
++                 <Suspense fallback={<p>Loading...</p>}>
++                     <Projects/>
++                 </Suspense>
+              ))}
+          </>
+      );
+  };
 ```
 
 ```diff
