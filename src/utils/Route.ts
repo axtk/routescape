@@ -7,7 +7,7 @@ import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
-import {matchPattern} from './matchPattern';
+import {match} from './match';
 import {push} from './push';
 
 export class Route {
@@ -115,7 +115,7 @@ export class Route {
      * Matches the current location against the location pattern.
      */
     match(locationPattern: LocationPattern): MatchParams | null {
-        return matchPattern(locationPattern, this.href);
+        return match(locationPattern, this.href);
     }
 
     /**
@@ -138,7 +138,7 @@ export class Route {
         matchOutput?: X | MatchHandler<X>,
         mismatchOutput?: Y | MatchHandler<Y>,
     ): X | Y | undefined {
-        let matches = matchPattern(locationPattern, this.href);
+        let matches = match(locationPattern, this.href);
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
