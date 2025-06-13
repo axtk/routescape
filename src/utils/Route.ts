@@ -1,4 +1,4 @@
-import type {LocationPattern} from '../types/LocationPattern';
+import type {MatchPattern} from '../types/MatchPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
 import type {MatchParams} from '../types/MatchParams';
@@ -114,14 +114,14 @@ export class Route {
     /**
      * Matches the current location against the location pattern.
      */
-    match(locationPattern: LocationPattern): MatchParams | null {
+    match(locationPattern: MatchPattern): MatchParams | null {
         return match(locationPattern, this.href);
     }
 
     /**
      * Checks whether the current location matches the location pattern.
      */
-    matches(locationPattern: LocationPattern): boolean {
+    matches(locationPattern: MatchPattern): boolean {
         return this.match(locationPattern) !== null;
     }
 
@@ -134,7 +134,7 @@ export class Route {
      * `y({href, params})` if they are functions, `x` or `y` themselves otherwise.
      */
     evaluate<X = undefined, Y = undefined>(
-        locationPattern: LocationPattern,
+        locationPattern: MatchPattern,
         matchOutput?: X | MatchHandler<X>,
         mismatchOutput?: Y | MatchHandler<Y>,
     ): X | Y | undefined {
