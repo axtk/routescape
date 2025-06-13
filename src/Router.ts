@@ -1,6 +1,6 @@
 import {type ReactNode, createElement, useEffect} from 'react';
-import {Route} from './utils/Route';
 import {RouteContext} from './RouteContext';
+import {Route} from './utils/Route';
 
 export type RouterProps = {
     location?: string | null | undefined | Route;

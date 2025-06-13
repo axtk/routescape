@@ -1,9 +1,9 @@
 import {type RefObject, useContext, useEffect} from 'react';
+import {RouteContext} from './RouteContext';
+import {getNavigationMode} from './getNavigationMode';
 import {isArrayLike} from './utils/isArrayLike';
 import {isLinkElement} from './utils/isLinkElement';
 import {isRouteEvent} from './utils/isRouteEvent';
-import {RouteContext} from './RouteContext';
-import {getNavigationMode} from './getNavigationMode';
 
 /**
  * Converts plain HTML links to route links, with history navigation

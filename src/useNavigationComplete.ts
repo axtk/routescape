@@ -1,6 +1,6 @@
 import {useContext, useEffect, useRef} from 'react';
-import type {NavigationHandler} from './types/NavigationHandler';
 import {RouteContext} from './RouteContext';
+import type {NavigationHandler} from './types/NavigationHandler';
 
 export function useNavigationComplete(callback: NavigationHandler) {
     let initedRef = useRef(false);

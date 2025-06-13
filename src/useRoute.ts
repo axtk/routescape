@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import type {Route} from './utils/Route';
 import {RouteContext} from './RouteContext';
+import type {Route} from './utils/Route';
 
 export type WithRoute = Route['evaluate'];
 

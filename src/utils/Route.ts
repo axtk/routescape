@@ -1,14 +1,14 @@
-import type {MatchHandler} from '../types/MatchHandler';
-import type {MatchParams} from '../types/MatchParams';
-import {matchPattern} from './matchPattern';
-import {push} from './push';
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
+import type {MatchHandler} from '../types/MatchHandler';
+import type {MatchParams} from '../types/MatchParams';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
+import {matchPattern} from './matchPattern';
+import {push} from './push';
 
 export class Route {
     href = '';

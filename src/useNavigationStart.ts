@@ -1,6 +1,6 @@
 import {useContext, useEffect} from 'react';
-import type {NavigationHandler} from './types/NavigationHandler';
 import {RouteContext} from './RouteContext';
+import type {NavigationHandler} from './types/NavigationHandler';
 
 export function useNavigationStart(callback: NavigationHandler) {
     let route = useContext(RouteContext);
