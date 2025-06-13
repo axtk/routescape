@@ -1,4 +1,4 @@
-import type {MatchParams} from './MatchParams';
+import type {MatchParams} from '../types/MatchParams';
 
 function toObject(x: string[]) {
     return x.reduce<Record<string, unknown>>((p, v, k) => {

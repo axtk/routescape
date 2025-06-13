@@ -1,5 +1,5 @@
 import {useContext, useEffect, useRef} from 'react';
-import type {NavigationHandler} from '../lib/url/NavigationHandler';
+import type {NavigationHandler} from './types/NavigationHandler';
 import {RouteContext} from './RouteContext';
 
 export function useNavigationComplete(callback: NavigationHandler) {

@@ -2,7 +2,7 @@ import type {
     MouseEvent as ReactMouseEvent,
     TouchEvent as ReactTouchEvent,
 } from 'react';
-import {isSameOrigin} from './url/isSameOrigin';
+import {isSameOrigin} from './isSameOrigin';
 
 export type LinkProps = {
     href?: string | null | undefined;

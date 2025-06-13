@@ -1,7 +1,7 @@
 import {type MouseEvent, useCallback, useContext} from 'react';
-import {isRouteEvent} from '../lib/isRouteEvent';
-import type {AProps} from './AProps';
-import type {AreaProps} from './AreaProps';
+import {isRouteEvent} from './utils/isRouteEvent';
+import type {AProps} from './types/AProps';
+import type {AreaProps} from './types/AreaProps';
 import {RouteContext} from './RouteContext';
 import {getNavigationMode} from './getNavigationMode';
 

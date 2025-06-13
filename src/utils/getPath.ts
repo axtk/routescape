@@ -1,5 +1,5 @@
-import type {LocationValue} from './LocationValue';
-import type {PathProps} from './PathProps';
+import type {LocationValue} from '../types/LocationValue';
+import type {PathProps} from '../types/PathProps';
 import {syntheticOrigin} from './syntheticOrigin';
 
 export const getPath = (

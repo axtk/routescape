@@ -1,5 +1,5 @@
 import {createElement} from 'react';
-import type {AProps} from './AProps';
+import type {AProps} from './types/AProps';
 import {useLinkClick} from './useLinkClick';
 
 export const A = (props: AProps) => {
