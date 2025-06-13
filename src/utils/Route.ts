@@ -142,7 +142,9 @@ export class Route {
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<P, Y>)({} as NonNullable<MatchParams<P>>)
+                ? (mismatchOutput as MatchHandler<P, Y>)(
+                      {} as NonNullable<MatchParams<P>>,
+                  )
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'

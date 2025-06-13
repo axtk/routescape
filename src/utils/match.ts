@@ -30,20 +30,20 @@ export function match<P extends MatchPattern>(
                 break;
             }
         }
-    }
-    else if (typeof pattern === 'string')
+    } else if (typeof pattern === 'string')
         result = pattern === '*' || pattern === value ? {} : null;
     else if (pattern instanceof RegExp) {
         let matches = pattern.exec(String(value));
 
-        result = matches ? {
-            params: {
-                ...toObject(Array.from(matches).slice(1)),
-                ...matches.groups,
-            },
-        } : null;
-    }
-    else if (isMatchPatternObject(pattern))
+        result = matches
+            ? {
+                  params: {
+                      ...toObject(Array.from(matches).slice(1)),
+                      ...matches.groups,
+                  },
+              }
+            : null;
+    } else if (isMatchPatternObject(pattern))
         result = pattern.exec(String(value));
 
     return result as MatchParams<P>;
