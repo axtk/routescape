@@ -1,4 +1,7 @@
 import type {MatchParams} from '../types/MatchParams';
+import type {MatchPattern} from '../types/MatchPattern';
+import type {MatchPatternObject} from '../types/MatchPatternObject';
+import type {MatchShape} from '../types/MatchShape';
 
 function toObject(x: string[]) {
     return x.reduce<Record<string, unknown>>((p, v, k) => {
@@ -8,31 +11,40 @@ function toObject(x: string[]) {
     }, {});
 }
 
-export function match(
-    pattern: unknown,
+function isMatchPatternObject(x: unknown): x is MatchPatternObject {
+    return x !== null && typeof x === 'object' && 'exec' in x && '_schema' in x;
+}
+
+export function match<P extends MatchPattern>(
+    pattern: P,
     value: unknown,
-): MatchParams | null {
+): MatchParams<P> {
+    let result: MatchShape = null;
+
     if (Array.isArray(pattern)) {
         for (let p of pattern) {
             let matches = match(p, value);
 
-            if (matches) return matches;
+            if (matches) {
+                result = matches;
+                break;
+            }
         }
-
-        return null;
     }
+    else if (typeof pattern === 'string')
+        result = pattern === '*' || pattern === value ? {} : null;
+    else if (pattern instanceof RegExp) {
+        let matches = pattern.exec(String(value));
 
-    if (pattern instanceof RegExp) {
-        let matches = String(value).match(pattern);
-
-        if (matches)
-            return {
+        result = matches ? {
+            params: {
                 ...toObject(Array.from(matches).slice(1)),
                 ...matches.groups,
-            } as MatchParams;
+            },
+        } : null;
     }
+    else if (isMatchPatternObject(pattern))
+        result = pattern.exec(String(value));
 
-    if (pattern === '*' || pattern === value) return {} as MatchParams;
-
-    return null;
+    return result as MatchParams<P>;
 }

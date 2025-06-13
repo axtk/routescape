@@ -1,7 +1,7 @@
-import type {MatchPattern} from '../types/MatchPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
 import type {MatchParams} from '../types/MatchParams';
+import type {MatchPattern} from '../types/MatchPattern';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
@@ -114,15 +114,15 @@ export class Route {
     /**
      * Matches the current location against the location pattern.
      */
-    match(locationPattern: MatchPattern): MatchParams | null {
-        return match(locationPattern, this.href);
+    match<P extends MatchPattern>(locationPattern: P) {
+        return match<P>(locationPattern, this.href);
     }
 
     /**
      * Checks whether the current location matches the location pattern.
      */
-    matches(locationPattern: MatchPattern): boolean {
-        return this.match(locationPattern) !== null;
+    matches<P extends MatchPattern>(locationPattern: P): boolean {
+        return this.match<P>(locationPattern) !== null;
     }
 
     /**
@@ -130,23 +130,23 @@ export class Route {
      * if the current location matches the location pattern the returned value
      * is based on the second parameter, otherwise on the third parameter.
      *
-     * `.evaluate(locationPattern, x, y)` returns either `x({href, params})` or
-     * `y({href, params})` if they are functions, `x` or `y` themselves otherwise.
+     * `.evaluate(locationPattern, x, y)` returns either `x({params})` or
+     * `y({params})` if they are functions, `x` or `y` themselves otherwise.
      */
-    evaluate<X = undefined, Y = undefined>(
-        locationPattern: MatchPattern,
-        matchOutput?: X | MatchHandler<X>,
-        mismatchOutput?: Y | MatchHandler<Y>,
+    evaluate<P extends MatchPattern, X = undefined, Y = undefined>(
+        locationPattern: P,
+        matchOutput?: X | MatchHandler<P, X>,
+        mismatchOutput?: Y | MatchHandler<P, Y>,
     ): X | Y | undefined {
-        let matches = match(locationPattern, this.href);
+        let matches = match<P>(locationPattern, this.href);
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<Y>)(matches ?? {})
+                ? (mismatchOutput as MatchHandler<P, Y>)({} as NonNullable<MatchParams<P>>)
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'
-            ? (matchOutput as MatchHandler<X>)(matches ?? {})
+            ? (matchOutput as MatchHandler<P, X>)(matches ?? {})
             : matchOutput;
     }
 

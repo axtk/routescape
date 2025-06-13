@@ -1,1 +1,3 @@
-export type MatchPattern = string | RegExp | (string | RegExp)[];
+import type {MatchPatternObject} from './MatchPatternObject';
+
+export type MatchPattern = string | RegExp | MatchPatternObject | (string | RegExp | MatchPatternObject)[];
