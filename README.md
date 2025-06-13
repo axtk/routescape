@@ -34,9 +34,9 @@ let App = () => {
                     <h1>Intro</h1>
                 </main>
             ))}
-            {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({id}) => (
+            {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({params}) => (
                 <main>
-                    <h1>Section {id}</h1>
+                    <h1>Section {params?.id}</h1>
                 </main>
             ))}
         </>
@@ -287,9 +287,9 @@ let App = () => {
                     <h1>Intro</h1>
                 </main>
             ))}
-            {withRoute(routeMap.sections, ({id}) => (
+            {withRoute(routeMap.sections, ({params}) => (
                 <main>
-                    <h1>Section #{id}</h1>
+                    <h1>Section {params?.id}</h1>
                 </main>
             ))}
             {withRoute(knownRoutes, null, (
