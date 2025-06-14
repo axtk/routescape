@@ -1,8 +1,9 @@
+import type {Schema, UnpackedSchema} from 'unpack-schema';
 import type {MatchPattern} from './MatchPattern';
 import type {MatchShape} from './MatchShape';
 
 export type MatchParams<P extends MatchPattern> = P extends {
-    _schema: MatchShape;
+    _schema: Schema<MatchShape>;
 }
-    ? P['_schema']
+    ? UnpackedSchema<P['_schema']>
     : MatchShape;
