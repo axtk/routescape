@@ -7,4 +7,4 @@ export type MatchParams<P extends MatchPattern> = P extends {
     _schema: URLSchema;
 }
     ? UnpackedURLSchema<P['_schema']>
-    : MatchShape;
+    : MatchShape<string>;
