@@ -410,6 +410,8 @@ let App = () => {
 };
 ```
 
+[Live demo](https://codesandbox.io/p/sandbox/little-moon-393y94?file=%2Fsrc%2FApp.tsx)
+
 🔹 The `url()` function in the example above helps validate the routes against the given URL schema: a type-aware code editor highlights typos and type mismatches of its parameters.
 
 🔹 The `match()` function returned from `createURLSchema()` can be used to parse the URL paramaters in a type-safe manner.
