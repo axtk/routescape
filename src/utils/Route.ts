@@ -1,7 +1,7 @@
+import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
 import type {MatchParams} from '../types/MatchParams';
-import type {LocationPattern} from '../types/LocationPattern';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';

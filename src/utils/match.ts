@@ -1,7 +1,7 @@
-import type {MatchParams} from '../types/MatchParams';
-import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationObject} from '../types/LocationObject';
+import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationShape} from '../types/LocationShape';
+import type {MatchParams} from '../types/MatchParams';
 
 function toObject(x: string[]) {
     return x.reduce<Record<string, unknown>>((p, v, k) => {
@@ -43,8 +43,7 @@ export function match<P extends LocationPattern>(
                   },
               }
             : null;
-    } else if (isLocationObject(pattern))
-        result = pattern.exec(String(value));
+    } else if (isLocationObject(pattern)) result = pattern.exec(String(value));
 
     return result as MatchParams<P>;
 }
