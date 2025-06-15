@@ -8,6 +8,7 @@
 - Similar to native APIs
 - Decoupled routes: no hierarchy as a prerequisite
 - Straightforward middleware hooks, lazy routes, SSR
+- Progressive type-safe routing
 - Utility hook to convert HTML links to SPA route links
 
 Installation: `npm i routescape`
@@ -352,3 +353,77 @@ Enabling lazy routes doesn't require a specific routing setup. It's a combinatio
 ```
 
 In this example, the `<Projects>` component isn't loaded until the corresponding `/projects` route is visited. When it's first visited, while the component is being fetched, `<p>Loading...</p>` shows up, as specified with the `fallback` prop of `<Suspense>`.
+
+## Type-safe routing
+
+As an optional enhancement, Routescape supports progressive schema-based route type safety.
+
+Type-safe routing is enabled by Routescape's support of routes returned from a type-safe URL builder like `url-shape` coupled with a schema created with `zod` or `yup`. This approach allows for gradual or partial adoption of type-safe routing in an application.
+
+```tsx
+import {A, useRoute} from 'routescape';
+import {createURLSchema} from 'url-shape';
+import {z} from 'zod';
+
+const {url, match} = createURLSchema({
+    '/': null,
+    '/sections/:id': {
+        params: z.object({
+            id: z.coerce.number(),
+        }),
+    },
+    '/search': {
+        query: z.object({
+            term: z.string(),
+            view: z.optional(z.enum(['full', 'compact'])),
+        }),
+    },
+});
+
+let App = () => {
+    let [route, withRoute] = useRoute();
+
+    // `withRoute(routePattern, x, y)` acts similarly to
+    // `matchesRoutePattern ? x : y`
+    return (
+        <>
+            <header className={withRoute(url('/'), 'full', 'compact')}>
+                <h1>App</h1>
+                <nav>
+                    <A href={url('/')}>Intro</A>
+                    {' | '}
+                    <A href={url('/sections/:id', {params: {id: 1}})}>Start</A>
+                </nav>
+            </header>
+            {withRoute(url('/'), (
+                <main>
+                    <h1>Intro</h1>
+                </main>
+            ))}
+            {withRoute(url('/sections/:id'), ({params}) => (
+                <main>
+                    <h1>Section {params?.id}</h1>
+                </main>
+            ))}
+        </>
+    );
+};
+```
+
+🔹 The `url()` function in the example above helps validate the routes against the given URL schema: a type-aware code editor highlights typos and type mismatches of its parameters.
+
+🔹 The `match()` function returned from `createURLSchema()` can be used to parse the URL paramaters in a type-safe manner.
+
+🔹 A URL schema doesn't have to cover the entire app. Standalone portions of an app can have their own URL schemas.
+
+🔹 Stricter type safety can be achieved by disallowing URLs and URL patterns other than provided by the URL builder (the `url()` function in the example above) throughout the app:
+
+```ts
+declare module 'routescape' {
+    interface Config {
+        strict: true;
+    }
+}
+```
+
+This setting effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
