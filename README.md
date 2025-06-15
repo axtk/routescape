@@ -390,9 +390,13 @@ let App = () => {
             <header className={withRoute(url('/'), 'full', 'compact')}>
                 <h1>App</h1>
                 <nav>
-                    <A href={url('/')}>Intro</A>
+                    <A href={url('/')}>
+                        Intro
+                    </A>
                     {' | '}
-                    <A href={url('/sections/:id', {params: {id: 1}})}>Start</A>
+                    <A href={url('/sections/:id', {params: {id: 1}})}>
+                        Start
+                    </A>
                 </nav>
             </header>
             {withRoute(url('/'), (
@@ -402,7 +406,7 @@ let App = () => {
             ))}
             {withRoute(url('/sections/:id'), ({params}) => (
                 <main>
-                    <h1>Section {params?.id}</h1>
+                    <h1>Section {params.id}</h1>
                 </main>
             ))}
         </>
@@ -428,4 +432,4 @@ declare module 'routescape' {
 }
 ```
 
-This setting effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
+Adding this type declaration to an app effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
