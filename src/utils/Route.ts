@@ -1,7 +1,7 @@
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
 import type {MatchParams} from '../types/MatchParams';
-import type {MatchPattern} from '../types/MatchPattern';
+import type {LocationPattern} from '../types/LocationPattern';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
@@ -114,14 +114,14 @@ export class Route {
     /**
      * Matches the current location against the location pattern.
      */
-    match<P extends MatchPattern>(locationPattern: P) {
+    match<P extends LocationPattern>(locationPattern: P) {
         return match<P>(locationPattern, this.href);
     }
 
     /**
      * Checks whether the current location matches the location pattern.
      */
-    matches<P extends MatchPattern>(locationPattern: P): boolean {
+    matches<P extends LocationPattern>(locationPattern: P): boolean {
         return this.match<P>(locationPattern) !== null;
     }
 
@@ -133,7 +133,7 @@ export class Route {
      * `.evaluate(locationPattern, x, y)` returns either `x({params})` or
      * `y({params})` if they are functions, `x` or `y` themselves otherwise.
      */
-    evaluate<P extends MatchPattern, X = undefined, Y = undefined>(
+    evaluate<P extends LocationPattern, X = undefined, Y = undefined>(
         locationPattern: P,
         matchOutput?: X | MatchHandler<P, X>,
         mismatchOutput?: Y | MatchHandler<P, Y>,

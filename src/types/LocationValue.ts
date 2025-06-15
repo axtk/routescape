@@ -1,1 +1,3 @@
-export type LocationValue = string | null | undefined;
+import type {LocationObject} from './LocationObject';
+
+export type LocationValue = string | LocationObject | undefined;

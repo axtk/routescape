@@ -1,10 +1,10 @@
-import type {MatchPattern} from './MatchPattern';
-import type {MatchShape} from './MatchShape';
+import type {LocationPattern} from './LocationPattern';
+import type {LocationShape} from './LocationShape';
 import type {URLSchema} from './URLSchema';
 import type {UnpackedURLSchema} from './UnpackedURLSchema';
 
-export type MatchParams<P extends MatchPattern> = P extends {
+export type MatchParams<P extends LocationPattern> = P extends {
     _schema: URLSchema;
 }
     ? UnpackedURLSchema<P['_schema']>
-    : MatchShape<string>;
+    : LocationShape<string>;

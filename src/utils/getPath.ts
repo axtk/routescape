@@ -13,7 +13,7 @@ export const getPath = (
             typeof window === 'undefined'
                 ? null
                 : new URL(window.location.href);
-    else url = new URL(location, syntheticOrigin);
+    else url = new URL(String(location), syntheticOrigin);
 
     if (!url) return '';
 
