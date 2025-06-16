@@ -358,15 +358,15 @@ In this example, the `<Projects>` component isn't loaded until the corresponding
 
 As an optional enhancement, Routescape supports progressive schema-based route type safety.
 
-Type-safe routing is enabled by Routescape's support of routes returned from a type-safe URL builder like `url-shape` coupled with a schema created with `zod` or `yup`. This approach allows for gradual or partial adoption of type-safe routing in an application.
+Type-safe routing is enabled by Routescape's support of routes created with a type-safe URL builder like `url-shape` coupled with a schema created with `zod` or `yup`. This approach allows for gradual or partial adoption of type-safe routing in an application.
 
 ```tsx
 import {A, useRoute} from 'routescape';
 import {createURLSchema} from 'url-shape';
 import {z} from 'zod';
 
-const {url, match} = createURLSchema({
-    '/': null,
+const {url} = createURLSchema({
+    '/': null, // goes without parameters
     '/sections/:id': {
         params: z.object({
             id: z.coerce.number(),
