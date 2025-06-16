@@ -7,7 +7,7 @@
 - Single way to match routes with components and prop values
 - Similar to native APIs
 - Decoupled routes: no hierarchy as a prerequisite
-- Straightforward middleware hooks, lazy routes, SSR
+- Straightforward middleware hooks, lazy routes, compatibility with SSR
 - Progressive type-safe routing
 - Utility hook to convert HTML links to SPA route links
 
