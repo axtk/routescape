@@ -375,7 +375,7 @@ const {url} = createURLSchema({
     '/search': {
         query: z.object({
             term: z.string(),
-            view: z.optional(z.enum(['full', 'compact'])),
+            lang: z.optional(z.enum(['current', 'all'])),
         }),
     },
 });
