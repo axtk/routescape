@@ -45,7 +45,7 @@ let App = () => {
 };
 ```
 
-[Live demo](https://codesandbox.io/p/sandbox/routescape-demo-fqlyhs?file=%2Fsrc%2FApp.js)
+[Live demo](https://codesandbox.io/p/sandbox/routescape-demo-fqlyhs?file=%2Fsrc%2FApp.jsx)
 
 Note that both the header's `className` prop and the `<main>` component are rendered in a similar fashion using the same route-matching function.
 
@@ -352,6 +352,8 @@ Enabling lazy routes doesn't require a specific routing setup. It's a combinatio
 + export const Projects = lazy(() => import('./Projects'));
 ```
 
+[Live demo](https://codesandbox.io/p/sandbox/routescape-lazy-routes-demo-dr5246?file=%2Fsrc%2FApp.jsx)
+
 In this example, the `<Projects>` component isn't loaded until the corresponding `/projects` route is visited. When it's first visited, while the component is being fetched, `<p>Loading...</p>` shows up, as specified with the `fallback` prop of `<Suspense>`.
 
 ## Type-safe routing
@@ -414,7 +416,7 @@ let App = () => {
 };
 ```
 
-[Live demo](https://codesandbox.io/p/sandbox/little-moon-393y94?file=%2Fsrc%2FApp.tsx)
+[Live demo](https://codesandbox.io/p/sandbox/routescape-type-safety-demo-393y94?file=%2Fsrc%2FApp.tsx)
 
 🔹 The `url()` function in the example above helps validate the routes against the given URL schema: a type-aware code editor highlights typos and type mismatches of its parameters.
 
