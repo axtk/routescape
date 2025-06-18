@@ -127,6 +127,22 @@ export class Route {
         return this.match<P>(locationPattern) !== null;
     }
 
+    _getMatch<P extends LocationPattern>(locationPattern: P) {
+        let matches = match<P>(locationPattern, this.href);
+
+        return {
+            ok: matches !== null,
+            href: this.href,
+            params: matches?.params ?? {},
+            query:
+                matches?.query ??
+                (isLocationObject(locationPattern)
+                    ? null
+                    : getQuery(this.href)) ??
+                {},
+        } as MatchHandlerParams<P>;
+    }
+
     /**
      * Loosely resembles the conditional ternary operator (`condition ? x : y`):
      * if the current location matches the location pattern the returned value
@@ -140,20 +156,9 @@ export class Route {
         matchOutput?: X | MatchHandler<P, X>,
         mismatchOutput?: Y | MatchHandler<P, Y>,
     ): X | Y | undefined {
-        let matches = match<P>(locationPattern, this.href);
+        let handlerParams = this._getMatch<P>(locationPattern);
 
-        let handlerParams = {
-            href: this.href,
-            params: matches?.params ?? {},
-            query:
-                matches?.query ??
-                (isLocationObject(locationPattern)
-                    ? null
-                    : getQuery(this.href)) ??
-                {},
-        } as MatchHandlerParams<P>;
-
-        if (matches === null)
+        if (!handlerParams.ok)
             return typeof mismatchOutput === 'function'
                 ? (mismatchOutput as MatchHandler<P, Y>)(handlerParams)
                 : mismatchOutput;

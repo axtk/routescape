@@ -20,6 +20,7 @@ export * from './src/useNavigationComplete';
 export * from './src/useNavigationStart';
 export * from './src/useRoute';
 export * from './src/useRouteLinks';
+export * from './src/useRouteMatch';
 export * from './src/utils/getPath';
 export * from './src/utils/isSameOrigin';
 export * from './src/utils/match';

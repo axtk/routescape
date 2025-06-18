@@ -10,6 +10,7 @@ type WithFallback<T, Fallback> = T extends undefined
       : T;
 
 type NormalizedParams<T extends LocationShape | undefined, X> = {
+    ok: boolean;
     href: string;
 } & WithFallback<
     {
