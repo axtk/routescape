@@ -1,12 +1,13 @@
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
-import type {MatchParams} from '../types/MatchParams';
+import type {MatchHandlerParams} from '../types/MatchHandlerParams';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
 import {getQuery} from './getQuery';
+import {isLocationObject} from './isLocationObject';
 import {isSameOrigin} from './isSameOrigin';
 import {match} from './match';
 import {push} from './push';
@@ -141,19 +142,21 @@ export class Route {
     ): X | Y | undefined {
         let matches = match<P>(locationPattern, this.href);
 
-        let matchParams: MatchParams<P> = {
+        let handlerParams = {
             href: this.href,
             params: matches?.params ?? {},
-            query: matches?.query ?? getQuery(this.href) ?? {},
-        };
+            query: matches?.query ?? (
+                isLocationObject(locationPattern) ? null : getQuery(this.href)
+            ) ?? {},
+        } as MatchHandlerParams<P>;
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<P, Y>)(matchParams)
+                ? (mismatchOutput as MatchHandler<P, Y>)(handlerParams)
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'
-            ? (matchOutput as MatchHandler<P, X>)(matchParams)
+            ? (matchOutput as MatchHandler<P, X>)(handlerParams)
             : matchOutput;
     }
 

@@ -1,7 +1,7 @@
-import type {LocationObject} from '../types/LocationObject';
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationShape} from '../types/LocationShape';
 import type {MatchParams} from '../types/MatchParams';
+import {isLocationObject} from './isLocationObject';
 
 function toObject(x: string[]) {
     return x.reduce<Record<string, unknown>>((p, v, k) => {
@@ -11,13 +11,9 @@ function toObject(x: string[]) {
     }, {});
 }
 
-function isLocationObject(x: unknown): x is LocationObject {
-    return x !== null && typeof x === 'object' && 'exec' in x && '_schema' in x;
-}
-
 export function match<P extends LocationPattern>(
     pattern: P,
-    value: unknown,
+    value: string,
 ): MatchParams<P> {
     let result: LocationShape = null;
 
