@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useMemo, useState} from 'react';
 import {RouteContext} from './RouteContext';
 import type {Route} from './utils/Route';
 
@@ -10,10 +10,9 @@ export function useRoute(): [Route, WithRoute] {
 
     useEffect(() => route.subscribe(href => setHref(href)), [route]);
 
-    let withRoute: WithRoute = useCallback(
-        (locationPattern, x, y) => route.evaluate(locationPattern, x, y),
-        [route],
-    );
+    return useMemo(() => {
+        let withRoute = route.evaluate.bind(route);
 
-    return [route, withRoute];
+        return [route, withRoute];
+    }, [route]);
 }
