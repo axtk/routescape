@@ -3,8 +3,25 @@ import type {LocationShape} from './LocationShape';
 import type {URLSchema} from './URLSchema';
 import type {UnpackedURLSchema} from './UnpackedURLSchema';
 
-export type MatchParams<P extends LocationPattern> = P extends {
-    _schema: URLSchema;
-}
-    ? UnpackedURLSchema<P['_schema']>
-    : LocationShape<string>;
+type WithFallback<T, Fallback> = T extends undefined
+    ? Fallback
+    : T extends null
+    ? Fallback
+    : T;
+
+type NormalizedMatchParams<T extends LocationShape | undefined> = {
+    href: string;
+} & WithFallback<
+    {
+        params: WithFallback<NonNullable<T>['params'], Record<string, never>>;
+        query: WithFallback<NonNullable<T>['query'], Record<string, string>>;
+    },
+    {
+        params: Record<string, never>;
+        query: Record<string, string>;
+    }
+>;
+
+export type MatchParams<P extends LocationPattern> = NormalizedMatchParams<
+    P extends {_schema: URLSchema} ? UnpackedURLSchema<P['_schema']> : LocationShape<string>
+>;

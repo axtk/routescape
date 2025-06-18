@@ -139,16 +139,19 @@ export class Route {
         mismatchOutput?: Y | MatchHandler<P, Y>,
     ): X | Y | undefined {
         let matches = match<P>(locationPattern, this.href);
+        let matchParams: MatchParams<P> = {
+            href: this.href,
+            params: matches?.params ?? {},
+            query: matches?.query ?? {},
+        };
 
         if (matches === null)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<P, Y>)(
-                      {} as NonNullable<MatchParams<P>>,
-                  )
+                ? (mismatchOutput as MatchHandler<P, Y>)(matchParams)
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'
-            ? (matchOutput as MatchHandler<P, X>)(matches ?? {})
+            ? (matchOutput as MatchHandler<P, X>)(matchParams)
             : matchOutput;
     }
 
