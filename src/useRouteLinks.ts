@@ -1,6 +1,6 @@
 import {type RefObject, useContext, useEffect} from 'react';
-import {RouteContext} from './RouteContext';
 import {getNavigationMode} from './getNavigationMode';
+import {RouteContext} from './RouteContext';
 import {isArrayLike} from './utils/isArrayLike';
 import {isLinkElement} from './utils/isLinkElement';
 import {isRouteEvent} from './utils/isRouteEvent';

@@ -1,4 +1,4 @@
-import {type ReactNode, createElement, useEffect} from 'react';
+import {createElement, type ReactNode, useEffect} from 'react';
 import {RouteContext} from './RouteContext';
 import {Route} from './utils/Route';
 
