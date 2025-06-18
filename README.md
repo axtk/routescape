@@ -356,6 +356,26 @@ Enabling lazy routes doesn't require a specific routing setup. It's a combinatio
 
 In this example, the `<Projects>` component isn't loaded until the corresponding `/projects` route is visited. When it's first visited, while the component is being fetched, `<p>Loading...</p>` shows up, as specified with the `fallback` prop of `<Suspense>`.
 
+## URL parameters
+
+The URL parameters, such as path parameters and query parameters, can be retrieved from the current location with the `useRouteMatch(pattern)` hook:
+
+```js
+import {useRouteMatch} from 'routescape';
+
+let Section = ({content}) => {
+    let {params} = useRouteMatch(/^\/section\/(?<id>\d+)\/?$/);
+
+    return (
+        <section className={params.id === '1' ? 'cover' : 'regular'}>
+            {content}
+        </section>
+    );
+};
+```
+
+🔹 To make sure the current location actually matches the given pattern, the boolean `ok` flag returned from the hook can be used.
+
 ## Type-safe routing
 
 As an optional enhancement, Routescape supports progressive schema-based route type safety.
@@ -435,3 +455,5 @@ declare module 'routescape' {
 ```
 
 Adding this type declaration to an app effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
+
+🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with the `useRouteMatch(pattern)` hook to get typed [URL parameters](#url-parameters).
