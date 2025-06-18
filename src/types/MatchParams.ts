@@ -13,11 +13,11 @@ type NormalizedMatchParams<T extends LocationShape | undefined> = {
     href: string;
 } & WithFallback<
     {
-        params: WithFallback<NonNullable<T>['params'], Record<string, never>>;
+        params: WithFallback<NonNullable<T>['params'], Record<string, string>>;
         query: WithFallback<NonNullable<T>['query'], Record<string, string>>;
     },
     {
-        params: Record<string, never>;
+        params: Record<string, string>;
         query: Record<string, string>;
     }
 >;
