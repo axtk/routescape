@@ -37,7 +37,7 @@ let App = () => {
             ))}
             {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({params}) => (
                 <main>
-                    <h1>Section {params?.id}</h1>
+                    <h1>Section {params.id}</h1>
                 </main>
             ))}
         </>
@@ -290,7 +290,7 @@ let App = () => {
             ))}
             {withRoute(routeMap.sections, ({params}) => (
                 <main>
-                    <h1>Section {params?.id}</h1>
+                    <h1>Section {params.id}</h1>
                 </main>
             ))}
             {withRoute(knownRoutes, null, (
