@@ -145,9 +145,12 @@ export class Route {
         let handlerParams = {
             href: this.href,
             params: matches?.params ?? {},
-            query: matches?.query ?? (
-                isLocationObject(locationPattern) ? null : getQuery(this.href)
-            ) ?? {},
+            query:
+                matches?.query ??
+                (isLocationObject(locationPattern)
+                    ? null
+                    : getQuery(this.href)) ??
+                {},
         } as MatchHandlerParams<P>;
 
         if (matches === null)
