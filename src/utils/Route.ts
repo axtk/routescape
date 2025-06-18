@@ -6,6 +6,7 @@ import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
 import {getPath} from './getPath';
+import {getQuery} from './getQuery';
 import {isSameOrigin} from './isSameOrigin';
 import {match} from './match';
 import {push} from './push';
@@ -139,10 +140,11 @@ export class Route {
         mismatchOutput?: Y | MatchHandler<P, Y>,
     ): X | Y | undefined {
         let matches = match<P>(locationPattern, this.href);
+
         let matchParams: MatchParams<P> = {
             href: this.href,
             params: matches?.params ?? {},
-            query: matches?.query ?? {},
+            query: matches?.query ?? getQuery(this.href) ?? {},
         };
 
         if (matches === null)
