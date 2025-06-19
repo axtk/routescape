@@ -21,7 +21,7 @@ Routescape offers a simple and consistent way to render both components and prop
 import {useRoute} from 'routescape';
 
 let App = () => {
-    let [route, withRoute] = useRoute();
+    let {route, withRoute} = useRoute();
 
     // `withRoute(routePattern, x, y)` acts similarly to
     // `matchesRoutePattern ? x : y`
@@ -227,7 +227,7 @@ app.get('/', (req, res) => {
 The value passed to the router's `location` prop can be accessed via the `useRoute()` hook:
 
 ```jsx
-let [route, withRoute] = useRoute();
+let {route, withRoute} = useRoute();
 
 console.log(route.href); // returns the router's `location`
 ```
@@ -276,7 +276,7 @@ const routeMap = {
 const knownRoutes = Object.values(routeMap);
 
 let App = () => {
-    let [, withRoute] = useRoute();
+    let {withRoute} = useRoute();
 
     return (
         <>
@@ -323,7 +323,7 @@ Enabling lazy routes doesn't require a specific routing setup. It's a combinatio
 + import {Projects} from './Projects.lazy';
 
   export const App = () => {
-      let [, withRoute] = useRoute();
+      let {withRoute} = useRoute();
 
       return (
           <>
@@ -403,7 +403,7 @@ const {url} = createURLSchema({
 });
 
 let App = () => {
-    let [route, withRoute] = useRoute();
+    let {withRoute} = useRoute();
 
     // `withRoute(routePattern, x, y)` acts similarly to
     // `matchesRoutePattern ? x : y`
