@@ -7,8 +7,11 @@ export function useRoute() {
 
     useEffect(() => route.subscribe(href => setHref(href)), [route]);
 
-    return useMemo(() => ({
-        route,
-        withRoute: route.evaluate.bind(route),
-    }), [route]);
+    return useMemo(
+        () => ({
+            route,
+            withRoute: route.evaluate.bind(route),
+        }),
+        [route],
+    );
 }
