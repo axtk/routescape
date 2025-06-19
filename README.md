@@ -65,7 +65,7 @@ The Routescape's route navigation API is largely aligned with the similar native
 + import {A, useRoute} from 'routescape';
 
   let UserNav = ({signedIn}) => {
-+     let [route] = useRoute();
++     let {route} = useRoute();
 
       let handleClick = () => {
 -         window.location.assign(signedIn ? '/profile' : '/login');
@@ -114,7 +114,7 @@ To jump to another route programmatically, there's the `route` object returned f
 import {useRoute} from 'routescape';
 
 let ProfileButton = ({signedIn}) => {
-    let [route] = useRoute();
+    let {route} = useRoute();
 
     let handleClick = () => {
         route.assign(signedIn ? '/profile' : '/login');
@@ -148,8 +148,8 @@ function setTitle(href) {
 }
 
 let App = () => {
+    let {route} = useRoute();
     let [hasUnsavedChanges, setUnsavedChanges] = useState(false);
-    let [route] = useRoute();
 
     let handleNavigationStart = useCallback(nextHref => {
         if (hasUnsavedChanges)
