@@ -1,4 +1,4 @@
-[![npm](https://flat.badgen.net/npm/v/routescape?labelColor=345&color=46e)](https://www.npmjs.com/package/routescape) ![Lightweight](https://flat.badgen.net/bundlephobia/minzip/routescape/?labelColor=345&color=46e&r=0) ![TypeScript ✓](https://flat.badgen.net/badge/TypeScript/✓?labelColor=345&color=345) ![SSR ✓](https://flat.badgen.net/badge/SSR/✓?labelColor=345&color=345)
+[![npm](https://flat.badgen.net/npm/v/routescape?labelColor=345&color=46e)](https://www.npmjs.com/package/routescape) ![Lightweight](https://flat.badgen.net/bundlephobia/minzip/routescape/?labelColor=345&color=46e&r=0) ![TypeScript ✓](https://flat.badgen.net/badge/TypeScript/✓?labelColor=345&color=345) ![CSR ✓](https://flat.badgen.net/badge/CSR/✓?labelColor=345&color=345) ![SSR ✓](https://flat.badgen.net/badge/SSR/✓?labelColor=345&color=345)
 
 # routescape
 
@@ -7,7 +7,7 @@
 - Single way to match routes with components and prop values
 - Similar to native APIs
 - Decoupled routes: no hierarchy as a prerequisite
-- Straightforward middleware hooks, lazy routes, compatibility with SSR
+- Straightforward middleware hooks, lazy routes, compatibility with CSR and SSR
 - Progressive type-safe routing
 - Utility hook to convert HTML links to SPA route links
 
@@ -15,7 +15,7 @@ Installation: `npm i routescape`
 
 ## Route matching
 
-Routescape offers a simple and consistent way to render both components and prop values based on the current location:
+Routescape offers a simple and consistent way to render both components and prop values in a single manner (unlike component-, config-, or file-based approaches) based on the current location:
 
 ```jsx
 import {useRoute} from 'routescape';
@@ -47,15 +47,15 @@ let App = () => {
 
 [Live demo](https://codesandbox.io/p/sandbox/routescape-demo-fqlyhs?file=%2Fsrc%2FApp.jsx)
 
-Note that both the header's `className` prop and the `<main>` component are rendered in a similar fashion using the same route-matching function.
+Note that both the header's `className` prop and the `<main>` component are rendered in a single way using the same route-matching function.
 
-(With the component-based or file-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
+(With the component-based, config-based, or file-based route matching adopted by some routers, conditionally rendering a component and a prop value have to be handled differently.)
 
-🔹 The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern.
+🔹 The ternary route-matching function `withRoute(routePattern, x, y)` returned from the `useRoute()` hook has the semantics similar to the ternary conditional operator `matchesRoutePattern ? x : y`, commonly seen with the conditional rendering pattern, which reflects the fact that route-based rendering also falls under this category.
 
-🔹 `withRoute()` doesn't impose any route hierarchy by default, as it can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle route-based logic in a way that best fits the app.
+🔹 `withRoute()` doesn't impose any route hierarchy by default, as it can be used with any route pattern anywhere in the app's components, offering sufficient flexibility to handle an arbitrary route-based logic.
 
-🔹 `withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
+🔹 `withRoute()` accepts route patterns of various types: `string | RegExp | (string | RegExp)[]`. The parameters of a regular expression route pattern (or of the first `RegExp` match in the array) are passed to the second and the third parameter of `withRoute()` if they are functions, as shown in the example above.
 
 ## Route navigation
 
