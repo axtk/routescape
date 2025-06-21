@@ -1,5 +1,5 @@
+import type {URLSchema} from 'unpack-schema';
 import type {LocationShape} from './LocationShape';
-import type {URLSchema} from './URLSchema';
 
 // URL builder output
 export type LocationObject = {

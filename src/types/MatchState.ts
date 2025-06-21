@@ -1,7 +1,6 @@
+import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import type {LocationPattern} from './LocationPattern';
 import type {LocationShape} from './LocationShape';
-import type {UnpackedURLSchema} from './UnpackedURLSchema';
-import type {URLSchema} from './URLSchema';
 
 type WithFallback<T, Fallback> = T extends undefined
     ? Fallback
