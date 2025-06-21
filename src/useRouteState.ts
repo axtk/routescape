@@ -1,5 +1,6 @@
 import {useCallback, useMemo} from 'react';
 import {getHrefSegment} from './utils/getHrefSegment';
+import {getMatchState} from './utils/getMatchState';
 import {isLocationObject} from './utils/isLocationObject';
 import type {LocationValue} from './types/LocationValue';
 import type {LocationShape} from './types/LocationShape';
@@ -56,8 +57,8 @@ export function useRouteState<T extends LocationValue>(
     }, [route, location, navigationMode]);
 
     let state = useMemo(
-        () => route._getMatch<T>(location),
-        [route, route.href, location],
+        () => getMatchState<T>(location, route.href),
+        [location, route.href],
     );
 
     return [state, setState] as [typeof state, SetState];

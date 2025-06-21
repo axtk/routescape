@@ -1,6 +1,6 @@
 import type {LocationPattern} from './LocationPattern';
-import type {MatchHandlerParams} from './MatchHandlerParams';
+import type {MatchState} from './MatchState';
 
 export type MatchHandler<P extends LocationPattern, T> = (
-    payload: MatchHandlerParams<P>,
+    payload: MatchState<P>,
 ) => T;

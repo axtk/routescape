@@ -1,10 +1,11 @@
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
-import type {MatchHandlerParams} from '../types/MatchHandlerParams';
+import type {MatchState} from '../types/MatchState';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
+import {getMatchState} from './getMatchState';
 import {getPath} from './getPath';
 import {getQuery} from './getQuery';
 import {isLocationObject} from './isLocationObject';
@@ -127,22 +128,6 @@ export class Route {
         return this.match<P>(locationPattern) !== null;
     }
 
-    _getMatch<P extends LocationPattern>(locationPattern: P) {
-        let matches = match<P>(locationPattern, this.href);
-
-        return {
-            ok: matches !== null,
-            href: this.href,
-            params: matches?.params ?? {},
-            query:
-                matches?.query ??
-                (isLocationObject(locationPattern)
-                    ? null
-                    : getQuery(this.href)) ??
-                {},
-        } as MatchHandlerParams<P>;
-    }
-
     /**
      * Loosely resembles the conditional ternary operator (`condition ? x : y`):
      * if the current location matches the location pattern the returned value
@@ -156,15 +141,15 @@ export class Route {
         matchOutput?: X | MatchHandler<P, X>,
         mismatchOutput?: Y | MatchHandler<P, Y>,
     ): X | Y | undefined {
-        let handlerParams = this._getMatch<P>(locationPattern);
+        let matchState = getMatchState<P>(locationPattern, this.href);
 
-        if (!handlerParams.ok)
+        if (!matchState.ok)
             return typeof mismatchOutput === 'function'
-                ? (mismatchOutput as MatchHandler<P, Y>)(handlerParams)
+                ? (mismatchOutput as MatchHandler<P, Y>)(matchState)
                 : mismatchOutput;
 
         return typeof matchOutput === 'function'
-            ? (matchOutput as MatchHandler<P, X>)(handlerParams)
+            ? (matchOutput as MatchHandler<P, X>)(matchState)
             : matchOutput;
     }
 

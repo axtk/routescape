@@ -12,6 +12,7 @@ export * from './src/types/LocationPattern';
 export * from './src/types/LocationValue';
 export * from './src/types/MatchHandler';
 export * from './src/types/MatchParams';
+export * from './src/types/MatchState';
 export * from './src/types/NavigationHandler';
 export * from './src/types/NavigationMode';
 export * from './src/types/PathProps';

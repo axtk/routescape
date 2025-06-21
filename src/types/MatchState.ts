@@ -23,7 +23,7 @@ type NormalizedParams<T extends LocationShape | undefined, X> = {
     }
 >;
 
-export type MatchHandlerParams<P extends LocationPattern> = P extends {
+export type MatchState<P extends LocationPattern> = P extends {
     _schema: URLSchema;
 }
     ? NormalizedParams<UnpackedURLSchema<P['_schema']>, never>
