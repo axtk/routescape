@@ -1,7 +1,12 @@
-import {useContext} from 'react';
-import {RouteContext} from './RouteContext';
+import {useMemo} from 'react';
+import {useRoute} from './useRoute';
 import type {LocationPattern} from './types/LocationPattern';
 
 export function useRouteMatch<P extends LocationPattern>(locationPattern: P) {
-    return useContext(RouteContext)._getMatch<P>(locationPattern);
+    let {route} = useRoute();
+
+    return useMemo(
+        () => route._getMatch<P>(locationPattern),
+        [route, route.href, locationPattern],
+    );
 }
