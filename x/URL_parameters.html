@@ -1,0 +1,27 @@
+---
+layout: section
+id: "URL_parameters"
+title: "URL parameters"
+prev:
+    id: "Lazy_routes"
+    title: "Lazy routes"
+next:
+    id: "Type-safe_routing"
+    title: "Type-safe routing"
+---
+
+<h2 id="url-parameters">URL parameters</h2>
+<p>The URL parameters, such as path parameters and query parameters, can be retrieved from the current location with the <code>useRouteMatch(pattern)</code> hook:</p>
+<pre><code class="language-js">import {useRouteMatch} from 'routescape';
+
+let Section = ({content}) =&gt; {
+    let {params} = useRouteMatch(/^\/section\/(?&lt;id&gt;\d+)\/?$/);
+
+    return (
+        &lt;section className={params.id === '1' ? 'cover' : 'regular'}&gt;
+            {content}
+        &lt;/section&gt;
+    );
+};
+</code></pre>
+<p>🔹 To make sure the current location actually matches the given pattern, the boolean <code>ok</code> flag returned from the hook can be used.</p>
