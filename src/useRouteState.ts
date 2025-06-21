@@ -1,14 +1,21 @@
+import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import {useCallback, useMemo} from 'react';
 import type {LocationShape} from './types/LocationShape';
 import type {LocationValue} from './types/LocationValue';
 import type {NavigationMode} from './types/NavigationMode';
-import {useRoute} from './useRoute';
 import {getHrefSegment} from './utils/getHrefSegment';
 import {getMatchState} from './utils/getMatchState';
 import {isLocationObject} from './utils/isLocationObject';
+import {useRoute} from './useRoute';
 
-type Compile = <S extends LocationShape>(data: S) => string;
-type SetState = <S extends LocationShape>(data: S) => void;
+type URLData<T extends LocationValue> = T extends {
+    _schema: URLSchema;
+}
+    ? UnpackedURLSchema<T['_schema']>
+    : LocationShape;
+
+type Compile<T extends LocationValue> = (data: URLData<T>) => string;
+type SetState<T extends LocationValue> = (data: URLData<T>) => void;
 
 export function useRouteState<T extends LocationValue>(
     location: T,
@@ -16,9 +23,9 @@ export function useRouteState<T extends LocationValue>(
 ) {
     let {route} = useRoute();
 
-    let compile = useCallback<Compile>(
+    let compile = useCallback<Compile<T>>(
         data => {
-            if (isLocationObject(location)) return location.compile(data);
+            if (isLocationObject(location)) return location.compile(data ?? {});
 
             if (!data?.query) return location ?? '';
 
@@ -44,7 +51,7 @@ export function useRouteState<T extends LocationValue>(
         [location],
     );
 
-    let setState = useCallback<SetState>(
+    let setState = useCallback<SetState<T>>(
         data => {
             let nextLocation = compile(data);
 
@@ -59,5 +66,5 @@ export function useRouteState<T extends LocationValue>(
         [location, route.href],
     );
 
-    return [state, setState] as [typeof state, SetState];
+    return [state, setState] as [typeof state, SetState<T>];
 }
