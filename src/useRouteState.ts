@@ -16,45 +16,38 @@ export function useRouteState<T extends LocationValue>(
 ) {
     let {route} = useRoute();
 
-    let setState = useCallback(() => {
-        let compile: Compile;
-
+    let compile = useCallback<Compile>(data => {
         if (isLocationObject(location))
-            compile = location.compile.bind(location);
-        else {
-            compile = (data: LocationShape) => {
-                if (!data?.query)
-                    return location ?? '';
+            return location.compile(data);
 
-                let path = getHrefSegment(location ?? '', 'pathname');
-                let hash = getHrefSegment(location ?? '', 'hash');
+        if (!data?.query)
+            return location ?? '';
 
-                let search = new URLSearchParams();
+        let path = getHrefSegment(location ?? '', 'pathname');
+        let hash = getHrefSegment(location ?? '', 'hash');
 
-                for (let [key, value] of Object.entries(data.query)) {
-                    if (value !== null && value !== undefined)
-                        search.append(
-                            key,
-                            typeof value === 'string' ? value : JSON.stringify(value),
-                        );
-                }
+        let searchParams = new URLSearchParams();
 
-                let searchString = search.toString();
-
-                return `${path}${searchString ? `?${searchString}` : ''}${hash}`;
-            };
+        for (let [key, value] of Object.entries(data.query)) {
+            if (value !== null && value !== undefined)
+                searchParams.append(
+                    key,
+                    typeof value === 'string' ? value : JSON.stringify(value),
+                );
         }
 
-        let setState: SetState = data => {
-            let nextLocation = compile(data);
+        let search = searchParams.toString();
 
-            if (navigationMode === 'replace')
-                route.replace(nextLocation);
-            else route.assign(nextLocation);
-        };
+        return `${path}${search ? `?${search}` : ''}${hash}`;
+    }, [location]);
 
-        return setState;
-    }, [route, location, navigationMode]);
+    let setState = useCallback<SetState>(data => {
+        let nextLocation = compile(data);
+
+        if (navigationMode === 'replace')
+            route.replace(nextLocation);
+        else route.assign(nextLocation);
+    }, [route, navigationMode, compile]);
 
     let state = useMemo(
         () => getMatchState<T>(location, route.href),
