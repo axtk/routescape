@@ -2,10 +2,11 @@ import type {
     MouseEvent as ReactMouseEvent,
     TouchEvent as ReactTouchEvent,
 } from 'react';
+import type {LocationValue} from '../types/LocationValue';
 import {isSameOrigin} from './isSameOrigin';
 
 export type LinkProps = {
-    href?: string | null | undefined;
+    href?: LocationValue;
     target?: string | null | undefined;
 };
 
