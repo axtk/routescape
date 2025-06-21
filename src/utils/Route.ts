@@ -1,14 +1,11 @@
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
-import type {MatchState} from '../types/MatchState';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getHrefSegment} from './getHrefSegment';
 import {getMatchState} from './getMatchState';
 import {getPath} from './getPath';
-import {getQuery} from './getQuery';
-import {isLocationObject} from './isLocationObject';
 import {isSameOrigin} from './isSameOrigin';
 import {match} from './match';
 import {push} from './push';
