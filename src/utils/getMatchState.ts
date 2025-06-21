@@ -16,9 +16,7 @@ export function getMatchState<P extends LocationPattern>(
         params: matches?.params ?? {},
         query:
             matches?.query ??
-            (isLocationObject(locationPattern)
-                ? null
-                : getQuery(href)) ??
+            (isLocationObject(locationPattern) ? null : getQuery(href)) ??
             {},
     } as MatchState<P>;
 }

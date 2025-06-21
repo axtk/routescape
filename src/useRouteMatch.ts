@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
-import {getMatchState} from './utils/getMatchState';
-import {useRoute} from './useRoute';
 import type {LocationPattern} from './types/LocationPattern';
+import {useRoute} from './useRoute';
+import {getMatchState} from './utils/getMatchState';
 
 export function useRouteMatch<P extends LocationPattern>(locationPattern: P) {
     let {route} = useRoute();
