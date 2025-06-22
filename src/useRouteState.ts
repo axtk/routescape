@@ -2,6 +2,7 @@ import {useCallback, useMemo} from 'react';
 import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import type {LocationShape} from './types/LocationShape';
 import type {LocationValue} from './types/LocationValue';
+import type {MatchState} from './types/MatchState';
 import type {NavigationMode} from './types/NavigationMode';
 import {useRoute} from './useRoute';
 import {getHrefSegment} from './utils/getHrefSegment';
@@ -18,7 +19,7 @@ type Compile<T extends LocationValue> = (data: URLData<T>) => string;
 type SetState<T extends LocationValue> = (data: URLData<T>) => void;
 
 export function useRouteState<T extends LocationValue>(
-    location: T,
+    location?: T,
     navigationMode?: NavigationMode,
 ) {
     let {route} = useRoute();
@@ -62,9 +63,12 @@ export function useRouteState<T extends LocationValue>(
     );
 
     let state = useMemo(
-        () => getMatchState<T>(location, route.href),
+        () => getMatchState(
+            location === undefined ? route.href : location,
+            route.href,
+        ),
         [location, route.href],
-    );
+    ) as MatchState<T>;
 
     return [state, setState] as [typeof state, SetState<T>];
 }
