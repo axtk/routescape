@@ -16,7 +16,8 @@ type URLData<T extends LocationValue> = T extends {
     : LocationShape;
 
 type Compile<T extends LocationValue> = (data: URLData<T>) => string;
-type SetState<T extends LocationValue> = (data: URLData<T>) => void;
+type SetState<T extends LocationValue> =
+    (update: URLData<T> | ((state: MatchState<T>) => URLData<T>)) => void;
 
 export function useRouteState<T extends LocationValue>(
     location?: T,
@@ -52,24 +53,30 @@ export function useRouteState<T extends LocationValue>(
         [location],
     );
 
+    let getState = useCallback((href?: string) => {
+        let resolvedHref = href ?? route.href;
+
+        return getMatchState(
+            location === undefined ? resolvedHref : location,
+            resolvedHref,
+        ) as MatchState<T>;
+    }, [location, route]);
+
     let setState = useCallback<SetState<T>>(
-        data => {
+        update => {
+            let data = typeof update === 'function'
+                ? update(getState())
+                : update;
+
             let nextLocation = compile(data);
 
             if (navigationMode === 'replace') route.replace(nextLocation);
             else route.assign(nextLocation);
         },
-        [route, navigationMode, compile],
+        [route, navigationMode, compile, getState],
     );
 
-    let state = useMemo(
-        () =>
-            getMatchState(
-                location === undefined ? route.href : location,
-                route.href,
-            ),
-        [location, route.href],
-    ) as MatchState<T>;
+    let state = useMemo(() => getState(route.href), [getState, route.href]) as MatchState<T>;
 
     return [state, setState] as [typeof state, SetState<T>];
 }
