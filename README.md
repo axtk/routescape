@@ -358,7 +358,11 @@ In this example, the `<Projects>` component isn't loaded until the corresponding
 
 ## URL parameters
 
-The URL parameters, such as path parameters and query parameters, can be retrieved from the current location with the `useRouteMatch(pattern)` hook:
+There are two partially overlapping hooks to deal with URL parameters, such as path parameters and query parameters.
+
+🔹 Both hooks accept typed URL patterns covered in the [Type-safe routing](#type-safe-routing) section to deal with typed URL parameters.
+
+🔹 `useRouteMatch(location)` can be used to read URL parameters from a fixed route, a `RegExp` pattern, or an array thereof.
 
 ```js
 import {useRouteMatch} from 'routescape';
@@ -375,6 +379,10 @@ let Section = ({content}) => {
 ```
 
 🔹 To make sure the current location actually matches the given pattern, the boolean `ok` flag returned from the hook can be used.
+
+🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to `useState()`, the hook returns `[state, setState]` to manipulate the URL parameters (which can be regarded as a form of app state).
+
+🔹 With the `location` parameter omitted, both hooks assume it's the current location.
 
 ## Type-safe routing
 
@@ -456,4 +464,4 @@ declare module 'routescape' {
 
 Adding this type declaration to an app effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
 
-🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with the `useRouteMatch(pattern)` hook to get typed [URL parameters](#url-parameters).
+🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with `useRouteMatch(pattern)` and `useRouteState(pattern)` to manipulate [URL parameters](#url-parameters) in a type-safe manner.
