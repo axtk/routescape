@@ -29,7 +29,7 @@ export function match<P extends LocationPattern>(
     } else if (typeof pattern === 'string')
         result = pattern === '*' || pattern === value ? {} : null;
     else if (pattern instanceof RegExp) {
-        let matches = pattern.exec(String(value));
+        let matches = pattern.exec(value);
 
         result = matches
             ? {
@@ -39,7 +39,7 @@ export function match<P extends LocationPattern>(
                   },
               }
             : null;
-    } else if (isLocationObject(pattern)) result = pattern.exec(String(value));
+    } else if (isLocationObject(pattern)) result = pattern.exec(value);
 
     return result as MatchParams<P>;
 }
