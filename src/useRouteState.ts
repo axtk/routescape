@@ -1,12 +1,12 @@
-import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import {useCallback, useMemo} from 'react';
+import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import type {LocationShape} from './types/LocationShape';
 import type {LocationValue} from './types/LocationValue';
 import type {NavigationMode} from './types/NavigationMode';
+import {useRoute} from './useRoute';
 import {getHrefSegment} from './utils/getHrefSegment';
 import {getMatchState} from './utils/getMatchState';
 import {isLocationObject} from './utils/isLocationObject';
-import {useRoute} from './useRoute';
 
 type URLData<T extends LocationValue> = T extends {
     _schema: URLSchema;
