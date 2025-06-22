@@ -465,3 +465,5 @@ declare module 'routescape' {
 Adding this type declaration to an app effectively disallows passing `string` and `RegExp` values to the link `href` prop and the ternary route-matching function `withRoute(routePattern, x, y)`, only allowing values returned from the URL builder.
 
 🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with `useRouteMatch(pattern)` and `useRouteState(pattern)` to manipulate [URL parameters](#url-parameters) in a type-safe manner.
+
+[Typed URL parameters state demo](https://codesandbox.io/p/sandbox/tqdqln?file=%2Fsrc%2FSection.tsx)
