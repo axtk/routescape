@@ -8,14 +8,14 @@ export function getMatchState<P extends LocationPattern>(
     locationPattern: P,
     href: string,
 ) {
-    let matches = match<P>(locationPattern, href);
+    let matchResult = match<P>(locationPattern, href);
 
     return {
-        ok: matches !== null,
+        ok: matchResult !== null,
         href,
-        params: matches?.params ?? {},
+        params: matchResult?.params ?? {},
         query:
-            matches?.query ??
+            matchResult?.query ??
             (isLocationObject(locationPattern) ? null : getQuery(href)) ??
             {},
     } as MatchState<P>;
