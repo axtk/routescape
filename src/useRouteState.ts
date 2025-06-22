@@ -63,10 +63,11 @@ export function useRouteState<T extends LocationValue>(
     );
 
     let state = useMemo(
-        () => getMatchState(
-            location === undefined ? route.href : location,
-            route.href,
-        ),
+        () =>
+            getMatchState(
+                location === undefined ? route.href : location,
+                route.href,
+            ),
         [location, route.href],
     ) as MatchState<T>;
 
