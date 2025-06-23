@@ -367,12 +367,12 @@ There are two partially overlapping hooks to deal with URL parameters, such as p
 ```js
 import {useRouteMatch} from 'routescape';
 
-let Section = ({content}) => {
-    let {params} = useRouteMatch(/^\/section\/(?<id>\d+)\/?$/);
+let Section = () => {
+    let {params, query} = useRouteMatch(/^\/section\/(?<id>\d+)\/?$/);
 
     return (
         <section className={params.id === '1' ? 'cover' : 'regular'}>
-            {content}
+            {/* content */}
         </section>
     );
 };
@@ -380,7 +380,7 @@ let Section = ({content}) => {
 
 🔹 To make sure the current location actually matches the given pattern, the boolean `ok` flag returned from the hook can be used.
 
-🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to React's `useState()`, the hook returns `[state, setState]` to manipulate the URL parameters (which can be regarded as a form of app state).
+🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to React's `useState()`, the hook returns `[state, setState]` to manipulate the URL's `{params, query}` (which can be regarded as a form of app state).
 
 🔹 With the `location` parameter omitted, both hooks assume it's the current location.
 
