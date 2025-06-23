@@ -448,7 +448,7 @@ let App = () => {
 
 🔹 The `url()` function is a type-safe URL builder. It creates a URL with a URL pattern defined in the schema and typed parameters that are prevalidated against the given schema: typos and type mismatches are highlighted in a type-aware code editor.
 
-🔹 For more details on the output of the `createURLSchema()`, such as `url()`, `match()`, `validate()`, and the `null`-schema mode, see the [description of `url-shape`](https://github.com/axtk/url-shape).
+🔹 For more details on the output of the `createURLSchema()`, such as `url()`, `match()`, `validate()`, and the `null`-schema mode, see the [description of `url-shape`](https://github.com/axtk/url-shape#readme).
 
 🔹 A URL schema doesn't have to cover the entire app. Standalone portions of an app can have their own URL schemas.
 
@@ -466,4 +466,4 @@ Adding this type declaration to an app effectively disallows using `string` and 
 
 🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with `useRouteMatch(pattern)` and `useRouteState(pattern)` to manipulate [URL parameters](#url-parameters) in a type-safe manner.
 
-[Typed URL parameters state demo](https://codesandbox.io/p/sandbox/tqdqln?file=%2Fsrc%2FSection.tsx)
+[Typed URL parameters state demo](https://codesandbox.io/p/sandbox/tqdqln?file=%2Fsrc%2FShapeSection.tsx)
