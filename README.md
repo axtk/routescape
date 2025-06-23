@@ -172,7 +172,7 @@ let App = () => {
 
 This example shows some common examples of what can be handled with routing middleware: preventing navigation with unsaved user input, redirecting to another location, setting the page title based on the current location.
 
-🔹 The `useNavigationComplete()` callback is first called when the component gets mounted if the route is already in the navigation-complete state.
+🔹 The callback of both hooks is first called when the component gets mounted if the route is already in the navigation-complete state.
 
 ## Converting HTML links to SPA route links
 
