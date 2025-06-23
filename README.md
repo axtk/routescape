@@ -8,7 +8,7 @@
 - Similar to native APIs
 - Decoupled routes: no hierarchy as a prerequisite
 - Straightforward middleware hooks, lazy routes, compatibility with CSR and SSR
-- Progressive type-safe routing
+- Progressive type-safe routing and typed URL parameters
 - Utility hook to convert HTML links to SPA route links
 
 Installation: `npm i routescape`
