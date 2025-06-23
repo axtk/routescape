@@ -462,7 +462,7 @@ declare module 'routescape' {
 }
 ```
 
-Adding this type declaration to an app effectively disallows using `string` and `RegExp` values for routes and route patterns (such as in the link `href` prop, `route.assign(location)`, and the ternary route-matching function `withRoute(routePattern, x, y)`), only allowing values returned from the URL builder while maintaining the same APIs.
+Adding this type declaration to an app effectively disallows using `string` and `RegExp` values for routes and route patterns (such as in the route link `href` prop, `route.assign(location)`, and the ternary route-matching function `withRoute(routePattern, x, y)`), only allowing values returned from the URL builder with the same routing APIs.
 
 🔹 A URL builder pattern (like `url('/sections/:id')`) can also be used with `useRouteMatch(pattern)` and `useRouteState(pattern)` to manipulate [URL parameters](#url-parameters) in a type-safe manner.
 
