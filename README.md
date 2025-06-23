@@ -380,7 +380,7 @@ let Section = ({content}) => {
 
 🔹 To make sure the current location actually matches the given pattern, the boolean `ok` flag returned from the hook can be used.
 
-🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to `useState()`, the hook returns `[state, setState]` to manipulate the URL parameters (which can be regarded as a form of app state).
+🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to React's `useState()`, the hook returns `[state, setState]` to manipulate the URL parameters (which can be regarded as a form of app state).
 
 🔹 With the `location` parameter omitted, both hooks assume it's the current location.
 
@@ -446,9 +446,9 @@ let App = () => {
 
 [Live demo](https://codesandbox.io/p/sandbox/routescape-type-safety-demo-393y94?file=%2Fsrc%2FApp.tsx)
 
-🔹 The `url()` function in the example above helps validate the routes against the given URL schema: a type-aware code editor highlights typos and type mismatches of its parameters.
+🔹 The `url()` function is a type-safe URL builder. It creates a URL with a URL pattern defined in the schema and typed parameters that are prevalidated against the given schema: typos and type mismatches are highlighted in a type-aware code editor.
 
-🔹 The `match()` function returned from `createURLSchema()` can be used to parse the URL paramaters in a type-safe manner.
+🔹 For more details on the output of the `createURLSchema()`, such as `url()`, `match()`, `validate()`, and the `null`-schema mode, see the [description of `url-shape`](https://github.com/axtk/url-shape).
 
 🔹 A URL schema doesn't have to cover the entire app. Standalone portions of an app can have their own URL schemas.
 
