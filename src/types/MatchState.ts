@@ -11,13 +11,19 @@ type WithFallback<T, Fallback> = T extends undefined
 type EmptyRecord<T> = T extends undefined
     ? Record<string, never>
     : T extends Record<string, unknown> | undefined
-    ? (Record<string, never> | { [K in keyof NonNullable<T>]: undefined })
-    : Record<string, never>;
+      ? Record<string, never> | {[K in keyof NonNullable<T>]: undefined}
+      : Record<string, never>;
 
 type NormalizedParams<T extends LocationShape | undefined> = WithFallback<
     {
-        params: WithFallback<NonNullable<T>['params'], EmptyRecord<NonNullable<T>['params']>>;
-        query: WithFallback<NonNullable<T>['query'], EmptyRecord<NonNullable<T>['query']>>;
+        params: WithFallback<
+            NonNullable<T>['params'],
+            EmptyRecord<NonNullable<T>['params']>
+        >;
+        query: WithFallback<
+            NonNullable<T>['query'],
+            EmptyRecord<NonNullable<T>['query']>
+        >;
     },
     {
         params: Record<string, never>;
@@ -30,9 +36,11 @@ type BaseMatchState = {
     href: string;
 };
 
-export type MatchState<P extends LocationPattern> = P extends {_schema: URLSchema;}
+export type MatchState<P extends LocationPattern> = P extends {
+    _schema: URLSchema;
+}
     ? BaseMatchState & NormalizedParams<UnpackedURLSchema<P['_schema']>>
     : BaseMatchState & {
-        params: Record<string, string>;
-        query: Record<string, string>;
-    };
+          params: Record<string, string>;
+          query: Record<string, string>;
+      };
