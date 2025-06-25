@@ -5,7 +5,6 @@ import type {MatchHandler} from '../types/MatchHandler';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
 import {getMatchState} from './getMatchState';
-import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
 import {match} from './match';
 import {push} from './push';
@@ -45,7 +44,18 @@ export class Route {
     }
 
     getHref(location?: LocationValue): string {
-        return getPath(location);
+        let url: string;
+
+        if (location === undefined || location === null)
+            url = typeof window === 'undefined' ? '' : window.location.href;
+        else url = String(location);
+
+        let {origin, pathname, search, hash, href} = new QuasiURL(url);
+
+        if (isSameOrigin(href))
+            origin = '';
+
+        return `${origin}${pathname}${search}${hash}`;
     }
 
     subscribe(listener: NavigationHandler) {

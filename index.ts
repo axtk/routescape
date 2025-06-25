@@ -23,7 +23,6 @@ export * from './src/useRoute';
 export * from './src/useRouteLinks';
 export * from './src/useRouteMatch';
 export * from './src/useRouteState';
-export * from './src/utils/getPath';
 export * from './src/utils/isSameOrigin';
 export * from './src/utils/match';
 export * from './src/utils/Route';

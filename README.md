@@ -236,31 +236,6 @@ Both `route` and `withRoute()` returned from `useRoute()` operate based on the r
 
 `<Router>` can be used with client-side rendering as well. In most cases, it is unnecessary since by default the route context takes the global location from `window.location` if it's available.
 
-### Custom routing
-
-The location provider component `<Router>` can be used to redefine the route matching behavior.
-
-```jsx
-import {Route, Router, getPath} from 'routescape';
-
-class PathRoute extends Route {
-    getHref(location) {
-        // disregard `search` and `hash`
-        return getPath(location, {search: false, hash: false});
-    }
-}
-
-let App = () => (
-    <Router location={new PathRoute(url)}>
-        <App/>
-    </Router>
-);
-```
-
-By default, routing relies on the entire URL. In this example, we've redefined this behavior to disregard the `search` and `hash` portions of the URL.
-
-Extending the `Route` class gives plenty of room for customization. This approach allows in fact to go beyond the URL-based routing altogether.
-
 ## Unknown routes
 
 The fallback parameter of the route-matching function `withRoute(routePattern, x, y)` can be used as a way to handle unknown routes:
