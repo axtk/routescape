@@ -353,11 +353,11 @@ let Section = () => {
 };
 ```
 
-🔹 To make sure the current location actually matches the given pattern, the boolean `ok` flag returned from the hook can be used.
-
 🔹 `useRouteState(location)` can be used to read and update URL parameters of a fixed route. Similarly to React's `useState()`, the hook returns `[state, setState]` to manipulate the URL's `{params, query}` (which can be regarded as a form of app state).
 
-🔹 With the `location` parameter omitted, both hooks assume it's the current location.
+🔹 To make sure the current location actually matches the given pattern, the boolean `state.ok` flag from `let state = useRouteMatch(location);` or `let [state, setState] = useRouteState(location);` can be used.
+
+🔹 With the `location` parameter omitted, both hooks assume that the current location is implied.
 
 ## Type-safe routing
 
