@@ -39,7 +39,7 @@ export function useRouteState<T extends LocationValue>(
             if (navigationMode === 'replace') route.replace(nextLocation);
             else route.assign(nextLocation);
         },
-        [route, navigationMode, getState],
+        [location, route, navigationMode, getState],
     );
 
     let state = useMemo(
