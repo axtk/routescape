@@ -1,21 +1,12 @@
 import {useCallback, useMemo} from 'react';
-import {QuasiURL} from 'quasiurl';
-import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
-import type {LocationShape} from './types/LocationShape';
 import type {LocationValue} from './types/LocationValue';
 import type {MatchState} from './types/MatchState';
 import type {NavigationMode} from './types/NavigationMode';
+import type {URLData} from './types/URLData';
 import {useRoute} from './useRoute';
 import {getMatchState} from './utils/getMatchState';
-import {isLocationObject} from './utils/isLocationObject';
+import {compileHref} from './utils/compileHref';
 
-type URLData<T extends LocationValue> = T extends {
-    _schema: URLSchema;
-}
-    ? UnpackedURLSchema<T['_schema']>
-    : LocationShape;
-
-type Compile<T extends LocationValue> = (data: URLData<T>) => string;
 type SetState<T extends LocationValue> = (
     update: URLData<T> | ((state: MatchState<T>) => URLData<T>),
 ) => void;
@@ -25,32 +16,6 @@ export function useRouteState<T extends LocationValue>(
     navigationMode?: NavigationMode,
 ) {
     let {route} = useRoute();
-
-    let compile = useCallback<Compile<T>>(
-        data => {
-            if (isLocationObject(location)) return location.compile(data ?? {});
-
-            if (!data?.query) return location ?? '';
-
-            let {origin, pathname, hash} = new QuasiURL(location ?? '');
-            let searchParams = new URLSearchParams();
-
-            for (let [key, value] of Object.entries(data.query)) {
-                if (value !== null && value !== undefined)
-                    searchParams.append(
-                        key,
-                        typeof value === 'string'
-                            ? value
-                            : JSON.stringify(value),
-                    );
-            }
-
-            let search = searchParams.toString();
-
-            return `${origin}${pathname}${search ? `?${search}` : ''}${hash}`;
-        },
-        [location],
-    );
 
     let getState = useCallback(
         (href?: string) => {
@@ -69,12 +34,12 @@ export function useRouteState<T extends LocationValue>(
             let data =
                 typeof update === 'function' ? update(getState()) : update;
 
-            let nextLocation = compile(data);
+            let nextLocation = compileHref<T>(location, data);
 
             if (navigationMode === 'replace') route.replace(nextLocation);
             else route.assign(nextLocation);
         },
-        [route, navigationMode, compile, getState],
+        [route, navigationMode, getState],
     );
 
     let state = useMemo(
