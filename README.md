@@ -35,7 +35,7 @@ let App = () => {
                     <h1>Intro</h1>
                 </main>
             ))}
-            {withRoute(/^\/section\/(?<id>\d+)\/?$/, ({params}) => (
+            {withRoute(/^\/sections\/(?<id>\d+)\/?$/, ({params}) => (
                 <main>
                     <h1>Section {params.id}</h1>
                 </main>
@@ -45,7 +45,7 @@ let App = () => {
 };
 ```
 
-[Live demo](https://codesandbox.io/p/sandbox/routescape-demo-fqlyhs?file=%2Fsrc%2FApp.jsx)
+[Live demo](https://codesandbox.io/p/sandbox/cn6985?file=%252Fsrc%252FApp.tsx)
 
 Note that both the header's `className` prop and the `<main>` component are rendered in a single way using the same route-matching function.
 
@@ -245,7 +245,7 @@ import {A, useRoute} from 'routescape';
 
 const routeMap = {
     intro: '/intro',
-    sections: /^\/section\/(?<id>\d+)\/?$/,
+    sections: /^\/sections\/(?<id>\d+)\/?$/,
 };
 
 const knownRoutes = Object.values(routeMap);
@@ -343,7 +343,7 @@ There are two partially overlapping hooks to deal with URL parameters, such as p
 import {useRouteMatch} from 'routescape';
 
 let Section = () => {
-    let {params, query} = useRouteMatch(/^\/section\/(?<id>\d+)\/?$/);
+    let {params, query} = useRouteMatch(/^\/sections\/(?<id>\d+)\/?$/);
 
     return (
         <section className={params.id === '1' ? 'cover' : 'regular'}>
