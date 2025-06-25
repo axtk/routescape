@@ -1,11 +1,11 @@
 import {useCallback, useMemo} from 'react';
+import {QuasiURL} from 'quasiurl';
 import type {UnpackedURLSchema, URLSchema} from 'unpack-schema';
 import type {LocationShape} from './types/LocationShape';
 import type {LocationValue} from './types/LocationValue';
 import type {MatchState} from './types/MatchState';
 import type {NavigationMode} from './types/NavigationMode';
 import {useRoute} from './useRoute';
-import {getHrefSegment} from './utils/getHrefSegment';
 import {getMatchState} from './utils/getMatchState';
 import {isLocationObject} from './utils/isLocationObject';
 
@@ -32,9 +32,7 @@ export function useRouteState<T extends LocationValue>(
 
             if (!data?.query) return location ?? '';
 
-            let path = getHrefSegment(location ?? '', 'pathname');
-            let hash = getHrefSegment(location ?? '', 'hash');
-
+            let {origin, pathname, hash} = new QuasiURL(location ?? '');
             let searchParams = new URLSearchParams();
 
             for (let [key, value] of Object.entries(data.query)) {
@@ -49,7 +47,7 @@ export function useRouteState<T extends LocationValue>(
 
             let search = searchParams.toString();
 
-            return `${path}${search ? `?${search}` : ''}${hash}`;
+            return `${origin}${pathname}${search ? `?${search}` : ''}${hash}`;
         },
         [location],
     );

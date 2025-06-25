@@ -1,9 +1,9 @@
+import {QuasiURL} from 'quasiurl';
 import type {LocationPattern} from '../types/LocationPattern';
 import type {LocationValue} from '../types/LocationValue';
 import type {MatchHandler} from '../types/MatchHandler';
 import type {NavigationHandler} from '../types/NavigationHandler';
 import type {NavigationMode} from '../types/NavigationMode';
-import {getHrefSegment} from './getHrefSegment';
 import {getMatchState} from './getMatchState';
 import {getPath} from './getPath';
 import {isSameOrigin} from './isSameOrigin';
@@ -188,15 +188,15 @@ export class Route {
     }
 
     get pathname() {
-        return getHrefSegment(this.href, 'pathname');
+        return new QuasiURL(this.href).pathname;
     }
 
     get search() {
-        return getHrefSegment(this.href, 'search');
+        return new QuasiURL(this.href).search;
     }
 
     get hash() {
-        return getHrefSegment(this.href, 'hash');
+        return new QuasiURL(this.href).hash;
     }
 
     /**
