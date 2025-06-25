@@ -52,8 +52,7 @@ export class Route {
 
         let {origin, pathname, search, hash, href} = new QuasiURL(url);
 
-        if (isSameOrigin(href))
-            origin = '';
+        if (isSameOrigin(href)) origin = '';
 
         return `${origin}${pathname}${search}${hash}`;
     }

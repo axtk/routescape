@@ -6,6 +6,8 @@ export function isSameOrigin(location: LocationValue): boolean {
 
     let url = new QuasiURL(String(location));
 
-    return url.origin === '' ||
-        (typeof window !== 'undefined' && url.origin === window.location.origin);
+    return (
+        url.origin === '' ||
+        (typeof window !== 'undefined' && url.origin === window.location.origin)
+    );
 }

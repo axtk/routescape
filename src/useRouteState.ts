@@ -4,8 +4,8 @@ import type {MatchState} from './types/MatchState';
 import type {NavigationMode} from './types/NavigationMode';
 import type {URLData} from './types/URLData';
 import {useRoute} from './useRoute';
-import {getMatchState} from './utils/getMatchState';
 import {compileHref} from './utils/compileHref';
+import {getMatchState} from './utils/getMatchState';
 
 type SetState<T extends LocationValue> = (
     update: URLData<T> | ((state: MatchState<T>) => URLData<T>),

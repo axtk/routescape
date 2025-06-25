@@ -18,9 +18,7 @@ export function compileHref<T extends LocationValue>(
         if (value !== null && value !== undefined)
             searchParams.append(
                 key,
-                typeof value === 'string'
-                    ? value
-                    : JSON.stringify(value),
+                typeof value === 'string' ? value : JSON.stringify(value),
             );
     }
 
