@@ -41,6 +41,6 @@ export type MatchState<P extends LocationPattern> = P extends {
 }
     ? BaseMatchState & NormalizedParams<UnpackedURLSchema<P['_schema']>>
     : BaseMatchState & {
-          params: Record<string, string>;
-          query: Record<string, string>;
+          params: Record<string, string | undefined>;
+          query: Record<string, string | undefined>;
       };

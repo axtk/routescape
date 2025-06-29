@@ -6,4 +6,4 @@ export type MatchParams<P extends LocationPattern> = P extends {
     _schema: URLSchema;
 }
     ? UnpackedURLSchema<P['_schema']>
-    : LocationShape<string>;
+    : LocationShape<string | undefined>;
